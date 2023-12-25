@@ -13,15 +13,21 @@ const ToolBar = (props: toolBarProps) => {
   const [isOpenSamples, setOpenSamples] = useState(false)
   const [isOpenFilters, setOpenFilters] = useState(false)
   const [isOpenSave, setOpenSave] = useState(false)
+
   function activeFigureMenu() {
     return (() => setOpenFigure(!isOpenFigure))
   }
+
+
   function activeBackgroundMenu() {
     return (() => setOpenBackground(!isOpenBackground))
   }
+
+
   function activeSamplesMenu() {
     return (() => setOpenSamples(!isOpenSamples))
   }
+
 
   function activeFiltersMenu() {
     return (setOpenFilters(!isOpenFilters))
@@ -36,9 +42,39 @@ const ToolBar = (props: toolBarProps) => {
     return (setOpenFilters(!isOpenFilters))
   }
 
+
   function activeSaveMenu() {
-    return (() => setOpenSave(!isOpenSave))
+    return (setOpenSave(!isOpenSave))
   }
+
+  function exportToJson(canvasData: any) {
+    const canvas = JSON.stringify(canvasData);
+    const filename = "canvas.json";
+
+    const file = new Blob([canvas], {type: "text/plain;charset=utf-8"});
+    const a = document.createElement("a");
+    a.href = URL.createObjectURL(file);
+    a.download = filename;
+    document.body.appendChild(a);
+    a.click();
+    a.remove();
+    setOpenSave(!isOpenSave)
+  }
+
+  function importFromJSON() {
+    const elemInput = document.querySelector('[type="file"]');
+    const files = elemInput.files;
+
+    const reader = new FileReader()
+    reader.readAsText(files[0])
+    reader.addEventListener('load', (e) => {
+      let JSONString = e.target.result;
+    let newCanvas = JSON.parse(JSONString)
+    setCanvas(newCanvas)
+    });
+    setOpenSave(!isOpenSave)
+  }
+
 
   return(
     <div className='toolBarMain'>
@@ -53,7 +89,7 @@ const ToolBar = (props: toolBarProps) => {
         <button className='toolBar__button' onClick = {activeSamplesMenu()}>Samples</button>
         <button className='toolBar__button'>Canvas size</button>
         <button className='toolBar__button' onClick = {() => activeFiltersMenu()}>Filters</button>
-        <button className='toolBar__button' onClick = {activeSaveMenu()}>Save</button>
+        <button className='toolBar__button' onClick = {() => activeSaveMenu()}>Save</button>
       </div>
       <div className='menues'>
         <div className={`menues__figure figureMenu ${isOpenFigure ? 'active' : ''}`}>
@@ -78,9 +114,11 @@ const ToolBar = (props: toolBarProps) => {
           <button className='filtersMenu__button' onClick = {() => applyFilter('blue')}>Blue</button>
         </div>
         <div className={`menues__save saveMenu ${isOpenSave ? 'active' : ''}`}>
-          <button className='saveMenu__button' onClick = {activeSaveMenu()}>JPEG</button>
-          <button className='saveMenu__button' onClick = {activeSaveMenu()}>PNG</button>
-          <button className='saveMenu__button' onClick = {activeSaveMenu()}>JSON</button>
+          <button className='saveMenu__button' onClick = {() => activeSaveMenu()}>JPEG</button>
+          <button className='saveMenu__button' onClick = {() => activeSaveMenu()}>PNG</button>
+          <button className='saveMenu__button' onClick = {() => importFromJSON()}>Upload JSON</button>
+          <input type="file" accept=".json,application/json"/>
+          <button className='saveMenu__button' onClick = {() => exportToJson(canvas)}>JSON</button>
         </div>
       </div>
     </div>
