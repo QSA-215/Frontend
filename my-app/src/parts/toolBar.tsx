@@ -14,7 +14,7 @@ const ToolBar = (props: toolBarProps) => {
   const [isOpenFilters, setOpenFilters] = useState(false)
   const [isOpenSave, setOpenSave] = useState(false)
 
-  function clear() {
+  function Clear() {
     const newCanvas = {
       ...canvas,
     };
@@ -36,7 +36,7 @@ const ToolBar = (props: toolBarProps) => {
   const textItalicInput = useRef(null);
   const textUnderlineInput = useRef(null);
 
-  function addText() {
+  function AddText() {
     const newCanvas = {
       ...canvas,
     };
@@ -71,7 +71,7 @@ const ToolBar = (props: toolBarProps) => {
   const figureColorInput = useRef(null);
   const figureType = useRef(null);
 
-  function addFigure() {
+  function AddFigure() {
     const newCanvas = {
       ...canvas,
     };
@@ -105,7 +105,7 @@ const ToolBar = (props: toolBarProps) => {
   const imageHeightInput = useRef(null);
   const imageUrl = useRef(null);
 
-  function addImage() {
+  function AddImage() {
     const newCanvas = {
       ...canvas,
     };
@@ -132,18 +132,18 @@ const ToolBar = (props: toolBarProps) => {
     setCanvas(newCanvas)
   }
 
-  function activeBackgroundMenu() {
+  function ActiveBackgroundMenu() {
     return (() => setOpenBackground(!isOpenBackground))
   }
-  function activeSamplesMenu() {
+  function ActiveSamplesMenu() {
     return (() => setOpenSamples(!isOpenSamples))
   }
 
-  function activeFiltersMenu() {
+  function ActiveFiltersMenu() {
     return (setOpenFilters(!isOpenFilters))
   }
 
-  function applyFilter(filterColor: string) {
+  function ApplyFilter(filterColor: string) {
     const newCanvas = {
       ...canvas,
     };
@@ -152,11 +152,11 @@ const ToolBar = (props: toolBarProps) => {
     return (setOpenFilters(!isOpenFilters))
   }
 
-  function activeSaveMenu() {
+  function ActiveSaveMenu() {
     return (setOpenSave(!isOpenSave))
   }
 
-  function exportToJson(canvasData: any) {
+  function ExportToJson(canvasData: any) {
     const canvas = JSON.stringify(canvasData);
     const filename = "canvas.json";
 
@@ -170,7 +170,7 @@ const ToolBar = (props: toolBarProps) => {
     setOpenSave(!isOpenSave)
   }
 
-  function importFromJSON() {
+  function ImportFromJSON() {
     const elemInput = document.querySelector('[type="file"]');
     const files = elemInput.files;
 
@@ -185,17 +185,17 @@ const ToolBar = (props: toolBarProps) => {
   }
 
   const [isOpenTextForm, setOpenTextForm] = useState(false)
-  function activeTextForm() {
+  function ActiveTextForm() {
     return (() => setOpenTextForm(!isOpenTextForm))
   }
 
   const [isOpenFigureForm, setOpenFigureForm] = useState(false)
-  function activeFigureForm() {
+  function ActiveFigureForm() {
     return (() => setOpenFigureForm(!isOpenFigureForm))
   }
 
   const [isOpenImageForm, setOpenImageForm] = useState(false)
-  function activeImageForm() {
+  function ActiveImageForm() {
     return (() => setOpenImageForm(!isOpenImageForm))
   }
 
@@ -204,47 +204,47 @@ const ToolBar = (props: toolBarProps) => {
       <div className='toolBar'>
         <button className='toolBar__button'>Undo</button>
         <button className='toolBar__button'>Redo</button>
-        <button className='toolBar__button' onClick = {() => clear()}>Clear</button>
-        <button className='toolBar__button' onClick = {activeTextForm()}>Text</button>
-        <button className='toolBar__button' onClick = {activeFigureForm()}>Figure</button>
-        <button className='toolBar__button' onClick = {activeImageForm()}>Image</button>
-        <button className='toolBar__button' onClick = {activeBackgroundMenu()}>Background</button>
-        <button className='toolBar__button' onClick = {activeSamplesMenu()}>Samples</button>
+        <button className='toolBar__button' onClick = {() => Clear()}>Clear</button>
+        <button className='toolBar__button' onClick = {ActiveTextForm()}>Text</button>
+        <button className='toolBar__button' onClick = {ActiveFigureForm()}>Figure</button>
+        <button className='toolBar__button' onClick = {ActiveImageForm()}>Image</button>
+        <button className='toolBar__button' onClick = {ActiveBackgroundMenu()}>Background</button>
+        <button className='toolBar__button' onClick = {ActiveSamplesMenu()}>Samples</button>
         <button className='toolBar__button'>Canvas size</button>
-        <button className='toolBar__button' onClick = {() => activeFiltersMenu()}>Filters</button>
-        <button className='toolBar__button' onClick = {() => activeSaveMenu()}>Save</button>
+        <button className='toolBar__button' onClick = {() => ActiveFiltersMenu()}>Filters</button>
+        <button className='toolBar__button' onClick = {() => ActiveSaveMenu()}>Save</button>
       </div>
       <div className='menues'>
         <div className={`menues__background backgroundMenu ${isOpenBackground ? 'active' : ''}`}>
-          <button className='backgroundMenu__button' onClick = {activeBackgroundMenu()}>Color</button>
-          <button className='backgroundMenu__button' onClick = {activeBackgroundMenu()}>Image</button>
+          <button className='backgroundMenu__button' onClick = {ActiveBackgroundMenu()}>Color</button>
+          <button className='backgroundMenu__button' onClick = {ActiveBackgroundMenu()}>Image</button>
         </div>
         <div className={`menues__samples samplesMenu ${isOpenSamples ? 'active' : ''}`}>
-          <button className='samplesMenu__button' onClick = {activeSamplesMenu()}>Sample 1</button>
-          <button className='samplesMenu__button' onClick = {activeSamplesMenu()}>Sample 2</button>
-          <button className='samplesMenu__button' onClick = {activeSamplesMenu()}>Sample 3</button>
+          <button className='samplesMenu__button' onClick = {ActiveSamplesMenu()}>Sample 1</button>
+          <button className='samplesMenu__button' onClick = {ActiveSamplesMenu()}>Sample 2</button>
+          <button className='samplesMenu__button' onClick = {ActiveSamplesMenu()}>Sample 3</button>
         </div>
         <div className={`menues__filters filtersMenu ${isOpenFilters ? 'active' : ''}`}>
-          <button className='filtersMenu__button' onClick = {() => applyFilter('none')}>None</button>
-          <button className='filtersMenu__button' onClick = {() => applyFilter('gray')}>Gray</button>
-          <button className='filtersMenu__button' onClick = {() => applyFilter('red')}>Red</button>
-          <button className='filtersMenu__button' onClick = {() => applyFilter('green')}>Green</button>
-          <button className='filtersMenu__button' onClick = {() => applyFilter('blue')}>Blue</button>
+          <button className='filtersMenu__button' onClick = {() => ApplyFilter('none')}>None</button>
+          <button className='filtersMenu__button' onClick = {() => ApplyFilter('gray')}>Gray</button>
+          <button className='filtersMenu__button' onClick = {() => ApplyFilter('red')}>Red</button>
+          <button className='filtersMenu__button' onClick = {() => ApplyFilter('green')}>Green</button>
+          <button className='filtersMenu__button' onClick = {() => ApplyFilter('blue')}>Blue</button>
         </div>
         <div className={`menues__save saveMenu ${isOpenSave ? 'active' : ''}`}>
-          <button className='saveMenu__button' onClick = {() => activeSaveMenu()}>JPEG</button>
-          <button className='saveMenu__button' onClick = {() => activeSaveMenu()}>PNG</button>
+          <button className='saveMenu__button' onClick = {() => ActiveSaveMenu()}>JPEG</button>
+          <button className='saveMenu__button' onClick = {() => ActiveSaveMenu()}>PNG</button>
           <button className='saveMenu__button' onClick = {() => importFromJSON()}>Upload JSON</button>
           <input type="file" accept=".json,application/json"/>
-          <button className='saveMenu__button' onClick = {() => exportToJson(canvas)}>JSON</button>
+          <button className='saveMenu__button' onClick = {() => ExportToJson(canvas)}>JSON</button>
         </div>
       </div>
 
       <form className={`textForm ${isOpenTextForm ? 'active' : ''}`}>
-        <input type="text" name='text' placeholder="Text" ref={textInput}/>
-        <input type="number" name='fontSize' placeholder="Font size" ref={fontSizeInput}/>
-        <input type="number" name='yPosition' placeholder="Top" ref={xTextPositionInput}/>
-        <input type="number" name='xPosition' placeholder="Left" ref={yTextPositionInput}/>
+        <input required type="text" name='text' placeholder="Text" ref={textInput}/>
+        <input required type="number" name='fontSize' placeholder="Font size" ref={fontSizeInput}/>
+        <input required type="number" name='yPosition' placeholder="Top" ref={xTextPositionInput}/>
+        <input required type="number" name='xPosition' placeholder="Left" ref={yTextPositionInput}/>
         <div>
           <b>Bold </b>
           <input type="checkbox" name="bold" ref={textBoldInput}/>
@@ -258,7 +258,7 @@ const ToolBar = (props: toolBarProps) => {
           <input type="checkbox" name="underline" ref={textUnderlineInput}/>
         </div>
         <input type="color" name='textColor' ref={textColorInput}/>
-        <button type="button" onClick={addText}>Create</button>
+        <button type="button" onClick={AddText}>Create</button>
       </form>
 
       <form className={`figureForm ${isOpenFigureForm ? 'active' : ''}`}>
@@ -272,7 +272,7 @@ const ToolBar = (props: toolBarProps) => {
         <input type="number" name='yPosition' placeholder="Top" ref={xFigurePositionInput}/>
         <input type="number" name='xPosition' placeholder="Left" ref={yFigurePositionInput}/>
         <input type="color" name='figureColor' ref={figureColorInput}/>
-        <button type="button" onClick={addFigure}>Create</button>
+        <button type="button" onClick={AddFigure}>Create</button>
       </form>
 
       <form className={`imageForm ${isOpenImageForm ? 'active' : ''}`}>
@@ -281,7 +281,7 @@ const ToolBar = (props: toolBarProps) => {
         <input type="number" name='imageWidth' placeholder="Width" ref={imageWidthInput}/>
         <input type="number" name='yPosition' placeholder="Top" ref={xImagePositionInput}/>
         <input type="number" name='xPosition' placeholder="Left" ref={yImagePositionInput}/>
-        <button type="button" onClick={addImage}>Create</button>
+        <button type="button" onClick={AddImage}>Create</button>
       </form>
 
     </div>

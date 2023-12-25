@@ -7,10 +7,11 @@ type AddObjectProps = {
 	canvas: CanvasModel,
     setCanvas: (canvas: CanvasModel) => void,
     setOpenForm: (isOpenForm: number) => void,
+    setObjectPosition: (objectPosition: number) => void,
 }
 
 const AddObject = (props: AddObjectProps) => {
-	const {canvas, setCanvas, setOpenForm} = props
+	const {canvas, setCanvas, setOpenForm, setObjectPosition} = props
 	const {position, type, id, selectionFlag} = props.object
 
 	function selectObject(id: number) {
@@ -18,26 +19,25 @@ const AddObject = (props: AddObjectProps) => {
       		...canvas,
     	};
     	const newObjects = canvas.objects;
-    	var index, objectIndex;
+    	var index;
     	for (index = 0; index < newObjects.length; ++index) {
     		if (newObjects[index].id == id) {
-    			objectIndex = index;
     			newObjects[index].selectionFlag = !newObjects[index].selectionFlag;
+    			setObjectPosition(index);
     			if (newObjects[index].type.objectType == 'text') {
-    				setOpenForm(1)
+    				setOpenForm(1);
     			}
     			else if (newObjects[index].type.objectType == 'figure') {
-    				setOpenForm(2)
+    				setOpenForm(2);
     			}
     			else if (newObjects[index].type.objectType == 'img') {
-    				setOpenForm(3)
+    				setOpenForm(3);
     			}
     		}
     		else {
     			newObjects[index].selectionFlag = false;
     		}
 		}
-		//newObjects.splice(objectIndex, 1);
     	newCanvas.objects = newObjects;
     	setCanvas(newCanvas)
 	};
