@@ -1,0 +1,71 @@
+.toolBarMain {
+	position: relative;
+	z-index: 5;
+}
+
+.toolBar {
+	display: inline-block;
+	border-radius: 10px;
+}
+
+.toolBar__button {
+	border: hidden;
+	box-shadow: 0 0 5px #444444;
+	background-color: #ffffff;
+	border-radius: 10px;
+	min-width: 100px;
+	font-size: 20px;
+	margin: 1px 3px;
+	padding: 6px 10px;
+}
+
+.menues {
+	position: absolute;
+	display: flex;
+}
+
+.figureMenu, .backgroundMenu, .samplesMenu, .filtersMenu, .saveMenu {
+	visibility: hidden;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+}
+
+.figureMenu__button, .backgroundMenu__button, .samplesMenu__button, .filtersMenu__button, .saveMenu__button {
+	border: hidden;
+	box-shadow: 0 0 5px #444444;
+	background-color: #ffffff;
+	border-radius: 10px;
+	min-width: 100px;
+	font-size: 20px;
+	margin: 2px 0;
+	padding: 6px 8px;
+}
+
+.figureMenu {
+    transform: translate(426px, 0);
+}
+
+.backgroundMenu {
+    transform: translate(540px, 0);
+}
+
+.backgroundMenu__button {
+    width: 126.75px;
+}
+
+.samplesMenu {
+    transform: translate(545px, 0);
+}
+
+.filtersMenu {
+    transform: translate(684.94px, 0);
+}
+
+.saveMenu {
+    transform: translate(690.94px, 0);
+}
+
+.figureMenu.active, .backgroundMenu.active, .samplesMenu.active, .filtersMenu.active, .saveMenu.active {
+	visibility: visible;
+}

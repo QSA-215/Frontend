@@ -1,0 +1,11 @@
+.app {
+	width: 100%;
+	height: 100vh;
+	display: flex;
+	background-repeat: no-repeat;
+	background-size: cover;
+	flex-direction: column;
+	align-items: center;
+	justify-content: space-around;
+	background-image: url("./main-background.jpg");
+}

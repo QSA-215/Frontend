@@ -135,7 +135,7 @@ const ThirdCanvas: types.CanvasModel = {
 					id: 2,
 					position: {
 						x: 150,
-						y: 100
+						y: 150
 					},
 					type: {
 						objectType: 'img',
@@ -151,7 +151,7 @@ const ThirdCanvas: types.CanvasModel = {
 					id: 3,
 					position: {
 						x: 200,
-						y: 120 
+						y: 170 
 					},
 					type: {
 						objectType: 'figure',
@@ -168,7 +168,7 @@ const ThirdCanvas: types.CanvasModel = {
 					id: 4,
 					position: {
 						x: 150,
-						y: 100
+						y: 150
 					},
 					type: {
 						objectType: 'figure',
@@ -185,7 +185,7 @@ const ThirdCanvas: types.CanvasModel = {
 					id: 5,
 					position: {
 						x: 200,
-						y: 200
+						y: 50
 					},
 					type: {
 						objectType: 'figure',
