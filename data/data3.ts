@@ -112,7 +112,7 @@ const ThirdCanvas: types.CanvasModel = {
 				backgroundType: 'img',
 				url: '../images/flowers.png'
 			},
-			filter: 'gray',
+			filter: 'none',
 			objects: [
 				{
 					id: 1,

@@ -23,6 +23,10 @@
 	z-index: 4;
 }
 
+.text.focus, .image.focus, .svg.focus {
+	outline: 2px dashed #ffffff;
+}
+
 .text, .image, .svg, .filter {
 	position: absolute;
 	display: inline-block;

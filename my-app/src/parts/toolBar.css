@@ -47,7 +47,7 @@
 }
 
 .backgroundMenu {
-    transform: translate(540px, 0);
+    transform: translate(640px, 0);
 }
 
 .backgroundMenu__button {
@@ -55,17 +55,50 @@
 }
 
 .samplesMenu {
-    transform: translate(545px, 0);
+    transform: translate(645px, 0);
 }
 
 .filtersMenu {
-    transform: translate(684.94px, 0);
+    transform: translate(784.94px, 0);
 }
 
 .saveMenu {
-    transform: translate(690.94px, 0);
+    transform: translate(715.94px, 0);
 }
 
 .figureMenu.active, .backgroundMenu.active, .samplesMenu.active, .filtersMenu.active, .saveMenu.active {
+	visibility: visible;
+}
+
+.textForm, .figureForm, .imageForm {
+	background-color: #ffffff;
+	border: solid 1px;
+	padding: 3px;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	position: absolute;
+	z-index: 10;
+}
+
+.textForm {
+	visibility: hidden;
+	top: 50px;
+	left: 287px;
+}
+
+.figureForm {
+	visibility: hidden;
+	top: 50px;
+	left: 393px;
+}
+
+.imageForm {
+	visibility: hidden;
+	top: 50px;
+	left: 460px;
+}
+
+.textForm.active, .figureForm.active, .imageForm.active {
 	visibility: visible;
 }

@@ -11,9 +11,9 @@ const App = () => {
 
   return (
     <div className='app'>
-      <Header/>
+      <Header />
       <ToolBar canvas={canvas} setCanvas={setCanvas}/>
-      <ViewCanvas canvas={canvas}></ViewCanvas>
+      <ViewCanvas canvas={canvas} setCanvas={setCanvas}></ViewCanvas>
     </div>
   )
 }

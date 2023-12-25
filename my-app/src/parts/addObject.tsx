@@ -4,18 +4,48 @@ import {CSSProperties} from 'react'
 
 type AddObjectProps = {
 	object: Object,
-	canvas: CanvasModel
+	canvas: CanvasModel,
+    setCanvas: (canvas: CanvasModel) => void,
+    setOpenForm: (isOpenForm: number) => void,
 }
 
-function AddObject(props: AddObjectProps) {
-	const {canvas, setCanvas} = props
+const AddObject = (props: AddObjectProps) => {
+	const {canvas, setCanvas, setOpenForm} = props
 	const {position, type, id, selectionFlag} = props.object
+
+	function selectObject(id: number) {
+		const newCanvas = {
+      		...canvas,
+    	};
+    	const newObjects = canvas.objects;
+    	var index, objectIndex;
+    	for (index = 0; index < newObjects.length; ++index) {
+    		if (newObjects[index].id == id) {
+    			objectIndex = index;
+    			newObjects[index].selectionFlag = !newObjects[index].selectionFlag;
+    			if (newObjects[index].type.objectType == 'text') {
+    				setOpenForm(1)
+    			}
+    			else if (newObjects[index].type.objectType == 'figure') {
+    				setOpenForm(2)
+    			}
+    			else if (newObjects[index].type.objectType == 'img') {
+    				setOpenForm(3)
+    			}
+    		}
+    		else {
+    			newObjects[index].selectionFlag = false;
+    		}
+		}
+		//newObjects.splice(objectIndex, 1);
+    	newCanvas.objects = newObjects;
+    	setCanvas(newCanvas)
+	};
 
 	const generalStyle: CSSProperties = {
 		top: position.y + 'px',
 		left: position.x + 'px'
 	};
-
 
 	if (type.objectType == 'text') {
 		const textStyle = {
@@ -27,7 +57,7 @@ function AddObject(props: AddObjectProps) {
 		};
 		return (
 			<div>
-				<p className="text" style={{...generalStyle, ...textStyle}}>{type.str}</p>
+				<p onClick={() => selectObject(id)} className={`text ${selectionFlag ? 'focus' : ''}`} style={{...generalStyle, ...textStyle}}>{type.str}</p>
 			</div>
 		)
 	}
@@ -41,7 +71,7 @@ function AddObject(props: AddObjectProps) {
 			backgroundSize: 'cover'
 		};
 		return (
-			<div className="image" style={{...generalStyle, ...imageStyle}}></div>
+			<div onClick={() => selectObject(id)} className={`image ${selectionFlag ? 'focus' : ''}`} style={{...generalStyle, ...imageStyle}}></div>
 		)
 	}
 
@@ -50,23 +80,23 @@ function AddObject(props: AddObjectProps) {
 		const figureStyle: CSSProperties = {
 			top: position.y - 5 + 'px',
 			left: position.x - 5 + 'px',
-			width: type.size.width + 10,
-			height: type.size.height + 10
+      		width: type.size.width + 10,
+      		height: type.size.height + 10
 		};
 
 		if (type.type == 'circle') {
 			return (
 				<svg className={`svg ${selectionFlag ? 'focus' : ''}`} style={figureStyle}>
-					<circle r={type.size.width/2} cx={(type.size.width/2) + 5} cy={(type.size.width/2) + 5} stroke={type.color} fillOpacity="0" strokeWidth="3"/>
-				</svg>
+      				<circle onClick={() => selectObject(id)} r={type.size.width/2} cx={(type.size.width/2) + 5} cy={(type.size.width/2) + 5} stroke={type.color} fillOpacity="0" strokeWidth="3"/>
+    			</svg>
 			)
 		}
 
 		if (type.type == 'rectangle') {
 			return (
 				<svg className={`svg ${selectionFlag ? 'focus' : ''}`} style={figureStyle}>
-					<rect width={type.size.width} height={type.size.height} x={5} y={5} stroke={type.color} fillOpacity="0" strokeWidth="3"/>
-				</svg>
+      				<rect onClick={() => selectObject(id)} width={type.size.width} height={type.size.height} x={5} y={5} stroke={type.color} fillOpacity="0" strokeWidth="3"/>
+    			</svg>
 			)
 		}
 
@@ -74,7 +104,7 @@ function AddObject(props: AddObjectProps) {
   			const points = `0, ${type.size.height}  ${type.size.width}, ${type.size.height}  ${type.size.width/2}, 0`
 			return (
 				<svg className={`svg ${selectionFlag ? 'focus' : ''}`} style={figureStyle}>
-      				<polygon points={points} transform='translate(5 5)' stroke={type.color} fillOpacity="0" strokeWidth="3"/>
+      				<polygon onClick={() => selectObject(id)} points={points} transform='translate(5 5)' stroke={type.color} fillOpacity="0" strokeWidth="3"/>
     			</svg>
 			)
 		}
@@ -87,7 +117,7 @@ type AddFilterProps = {
 	filterHeight: number
 }
 
-function AddFilter(props: AddFilterProps) {
+const AddFilter = (props: AddFilterProps) => {
 	const {filterColor, filterWidth, filterHeight} = props
 
 	const filterStyle: CSSProperties = {
