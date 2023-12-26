@@ -197,6 +197,23 @@ const ThirdCanvas: types.CanvasModel = {
 						color: "#00ff00"
 					},
 					selectionFlag: false
+				},
+				{
+					id: 6,
+					position: {
+						x: 0,
+						y: 0 
+					},
+					type: {
+						objectType: 'text',
+						str: 'ПЁЁЁС',
+						fontSize: 50,
+						color: '#f0f0f0',
+						bold: false,
+						italic: true,
+						underline: true
+					},
+					selectionFlag: false
 				}
 				]
 };

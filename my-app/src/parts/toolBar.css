@@ -1,6 +1,5 @@
 .toolBarMain {
 	position: relative;
-	z-index: 5;
 }
 
 .toolBar {
@@ -68,6 +67,7 @@
 
 .figureMenu.active, .backgroundMenu.active, .samplesMenu.active, .filtersMenu.active, .saveMenu.active {
 	visibility: visible;
+	z-index: 5;
 }
 
 .textForm, .figureForm, .imageForm {
