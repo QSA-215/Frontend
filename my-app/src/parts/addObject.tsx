@@ -1,6 +1,6 @@
 import './addObject.css'
 import {Object, CanvasModel} from '../../../data/types'
-import {CSSProperties} from 'react'
+import {CSSProperties, useState, useRef} from 'react'
 
 type AddObjectProps = {
 	object: Object,
@@ -55,9 +55,25 @@ const AddObject = (props: AddObjectProps) => {
 			fontStyle: (type.italic == true) ? 'italic' : undefined,
 			textDecoration: (type.underline == true) ? 'underline' : undefined,
 		};
+/*
+		const [startX, setStartX] = useState(0);
+		const [startY, setStartY] = useState(0);
+		const handleDragStart = (event) => {
+			setStartX(event.clientX);
+			setStartY(event.clientY);
+		};
+
+
+		const [endX, setEndX] = useState(0);
+		const [endY, setEndY] = useState(0);
+		const handleDragEnd = (event) => {
+			setEndX(event.clientX);
+			setEndY(event.clientY);
+		};
+*/
 		return (
 			<div>
-				<p onClick={() => selectObject(id)} className={`text ${selectionFlag ? 'focus' : ''}`} style={{...generalStyle, ...textStyle}}>{type.str}</p>
+				<p /*draggable onDragStart={handleDragStart} onDragEnd={handleDragEnd}*/ onClick={() => selectObject(id)} className={`text ${selectionFlag ? 'focus' : ''}`} style={{...generalStyle, ...textStyle/*, left: endX - startX, top: endY - startY*/}}>{type.str}</p>
 			</div>
 		)
 	}
