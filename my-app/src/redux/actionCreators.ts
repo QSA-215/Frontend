@@ -1,16 +1,52 @@
-import {CanvasModel} from '../../../data/types'
+import {CanvasModel, Object, Position, Size, BackgroundImg, BackgroundColor} from '../../../data/types'
 import {CanvasActions} from './actions'
+
+function createSetCanvasAction(canvas: CanvasModel) {
+	return {
+		type: CanvasActions.SET_CANVAS,
+		payload: {
+			canvas,
+		}
+	}
+}
+
+function createChangeCanvasSizeAction(newSize: Size) {
+	return {
+		type: CanvasActions.CHANGE_CANVAS_SIZE,
+		payload: {
+			newSize,
+		}
+	}
+}
+
+function createChangeCanvasBackgroundAction(newBackground: BackgroundImg | BackgroundColor) {
+	return {
+		type: CanvasActions.CHANGE_CANVAS_BACKGROUND,
+		payload: {
+			newBackground,
+		}
+	}
+}
 
 function createAddObjectAction(object: Object) {
 	return {
 		type: CanvasActions.ADD_OBJECT,
 		payload: {
-			object
+			object,
 		}
 	}
 }
 
-function createChangeObjectPositionAction(objectId: number, newPosition: position) {
+function createSelectObjectAction(objectId: number) {
+	return {
+		type: CanvasActions.SELECT_OBJECT,
+		payload: {
+			objectId,
+		}
+	}
+}
+
+function createChangeObjectPositionAction(objectId: number, newPosition: Position) {
 	return {
 		type: CanvasActions.CHANGE_OBJECT_POSITION,
 		payload: {
@@ -20,7 +56,7 @@ function createChangeObjectPositionAction(objectId: number, newPosition: positio
 	}
 }
 
-function createChangeObjectSizeAction(objectId: number, newSize: size) {
+function createChangeObjectSizeAction(objectId: number, newSize: Size) {
 	return {
 		type: CanvasActions.CHANGE_OBJECT_SIZE,
 		payload: {
@@ -40,12 +76,13 @@ function createChangeObjectColorAction(objectId: number, newColor: string) {
 	}
 }
 
-function createChangeObjectTextAction(objectId: number, newText: string) {
+function createChangeObjectTextAction(objectId: number, newText: string, newFontSize: number) {
 	return {
 		type: CanvasActions.CHANGE_OBJECT_TEXT,
 		payload: {
 			objectId,
 			newText,
+			newFontSize,
 		},
 	}
 }
@@ -75,7 +112,11 @@ function createClearAction() {
 }
 
 export {
+	createSetCanvasAction,
+	createChangeCanvasSizeAction,
+	createChangeCanvasBackgroundAction,
 	createAddObjectAction,
+	createSelectObjectAction,
 	createChangeObjectPositionAction,
 	createChangeObjectSizeAction,
 	createChangeObjectColorAction,

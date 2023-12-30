@@ -23,7 +23,7 @@
 	display: flex;
 }
 
-.figureMenu, .backgroundMenu, .samplesMenu, .filtersMenu, .saveMenu {
+.samplesMenu, .filtersMenu, .saveMenu {
 	visibility: hidden;
 	display: flex;
 	flex-direction: column;
@@ -41,36 +41,24 @@
 	padding: 6px 8px;
 }
 
-.figureMenu {
-    transform: translate(426px, 0);
-}
-
-.backgroundMenu {
-    transform: translate(640px, 0);
-}
-
-.backgroundMenu__button {
-    width: 126.75px;
-}
-
 .samplesMenu {
-    transform: translate(645px, 0);
+    transform: translate(771px, 0);
 }
 
 .filtersMenu {
-    transform: translate(784.94px, 0);
+    transform: translate(912px, 0);
 }
 
 .saveMenu {
-    transform: translate(715.94px, 0);
+    transform: translate(840px, 0);
 }
 
-.figureMenu.active, .backgroundMenu.active, .samplesMenu.active, .filtersMenu.active, .saveMenu.active {
+.samplesMenu.active, .filtersMenu.active, .saveMenu.active {
 	visibility: visible;
 	z-index: 5;
 }
 
-.textForm, .figureForm, .imageForm {
+.textForm, .figureForm, .imageForm, .backgroundForm, .canvasSizeForm {
 	background-color: #ffffff;
 	border: solid 1px;
 	padding: 3px;
@@ -99,6 +87,18 @@
 	left: 460px;
 }
 
-.textForm.active, .figureForm.active, .imageForm.active {
+.backgroundForm {
+	visibility: hidden;
+	top: 50px;
+	left: 550px;
+}
+
+.canvasSizeForm {
+	visibility: hidden;
+	top: 50px;
+	left: 850px;
+}
+
+.textForm.active, .figureForm.active, .imageForm.active, .backgroundForm.active, .canvasSizeForm.active {
 	visibility: visible;
 }

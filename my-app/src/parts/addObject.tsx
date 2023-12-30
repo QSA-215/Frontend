@@ -1,46 +1,15 @@
 import './addObject.css'
-import {Object, CanvasModel} from '../../../data/types'
-import {CSSProperties, useState, useRef} from 'react'
+import {Object} from '../../../data/types'
+import {CSSProperties} from 'react'
+import {useAppSelector, useAppActions} from '../redux/hooks'
 
 type AddObjectProps = {
 	object: Object,
-	canvas: CanvasModel,
-    setCanvas: (canvas: CanvasModel) => void,
-    setOpenForm: (isOpenForm: number) => void,
-    setObjectPosition: (objectPosition: number) => void,
 }
 
 const AddObject = (props: AddObjectProps) => {
-	const {canvas, setCanvas, setOpenForm, setObjectPosition} = props
 	const {position, type, id, selectionFlag} = props.object
-
-	function selectObject(id: number) {
-		const newCanvas = {
-      		...canvas,
-    	};
-    	const newObjects = canvas.objects;
-    	var index;
-    	for (index = 0; index < newObjects.length; ++index) {
-    		if (newObjects[index].id == id) {
-    			newObjects[index].selectionFlag = !newObjects[index].selectionFlag;
-    			setObjectPosition(index);
-    			if (newObjects[index].type.objectType == 'text') {
-    				setOpenForm(1);
-    			}
-    			else if (newObjects[index].type.objectType == 'figure') {
-    				setOpenForm(2);
-    			}
-    			else if (newObjects[index].type.objectType == 'img') {
-    				setOpenForm(3);
-    			}
-    		}
-    		else {
-    			newObjects[index].selectionFlag = false;
-    		}
-		}
-    	newCanvas.objects = newObjects;
-    	setCanvas(newCanvas)
-	};
+    const {createSelectObjectAction} = useAppActions()
 
 	const generalStyle: CSSProperties = {
 		top: position.y + 'px',
@@ -55,27 +24,7 @@ const AddObject = (props: AddObjectProps) => {
 			fontStyle: (type.italic == true) ? 'italic' : undefined,
 			textDecoration: (type.underline == true) ? 'underline' : undefined,
 		};
-/*
-		const [startX, setStartX] = useState(0);
-		const [startY, setStartY] = useState(0);
-		const handleDragStart = (event) => {
-			setStartX(event.clientX);
-			setStartY(event.clientY);
-		};
-
-
-		const [endX, setEndX] = useState(0);
-		const [endY, setEndY] = useState(0);
-		const handleDragEnd = (event) => {
-			setEndX(event.clientX);
-			setEndY(event.clientY);
-		};
-*/
-		return (
-			<div>
-				<p /*draggable onDragStart={handleDragStart} onDragEnd={handleDragEnd}*/ onClick={() => selectObject(id)} className={`text ${selectionFlag ? 'focus' : ''}`} style={{...generalStyle, ...textStyle/*, left: endX - startX, top: endY - startY*/}}>{type.str}</p>
-			</div>
-		)
+		return (<p onClick={() => createSelectObjectAction(id)} className={`text ${selectionFlag ? 'focus' : ''}`} style={{...generalStyle, ...textStyle}}>{type.str}</p>)
 	}
 
 
@@ -86,9 +35,7 @@ const AddObject = (props: AddObjectProps) => {
 			backgroundImage: 'url(' + type.url + ')',
 			backgroundSize: 'cover'
 		};
-		return (
-			<div onClick={() => selectObject(id)} className={`image ${selectionFlag ? 'focus' : ''}`} style={{...generalStyle, ...imageStyle}}></div>
-		)
+		return (<div onClick={() => createSelectObjectAction(id)} className={`image ${selectionFlag ? 'focus' : ''}`} style={{...generalStyle, ...imageStyle}}></div>)
 	}
 
 
@@ -103,7 +50,7 @@ const AddObject = (props: AddObjectProps) => {
 		if (type.type == 'circle') {
 			return (
 				<svg className={`svg ${selectionFlag ? 'focus' : ''}`} style={figureStyle}>
-      				<circle onClick={() => selectObject(id)} r={type.size.width/2} cx={(type.size.width/2) + 5} cy={(type.size.width/2) + 5} stroke={type.color} fillOpacity="0" strokeWidth="3"/>
+      				<circle onClick={() => createSelectObjectAction(id)} r={type.size.width/2} cx={(type.size.width/2) + 5} cy={(type.size.width/2) + 5} stroke={type.color} fillOpacity="0" strokeWidth="3"/>
     			</svg>
 			)
 		}
@@ -111,7 +58,7 @@ const AddObject = (props: AddObjectProps) => {
 		if (type.type == 'rectangle') {
 			return (
 				<svg className={`svg ${selectionFlag ? 'focus' : ''}`} style={figureStyle}>
-      				<rect onClick={() => selectObject(id)} width={type.size.width} height={type.size.height} x={5} y={5} stroke={type.color} fillOpacity="0" strokeWidth="3"/>
+      				<rect onClick={() => createSelectObjectAction(id)} width={type.size.width} height={type.size.height} x={5} y={5} stroke={type.color} fillOpacity="0" strokeWidth="3"/>
     			</svg>
 			)
 		}
@@ -120,50 +67,23 @@ const AddObject = (props: AddObjectProps) => {
   			const points = `0, ${type.size.height}  ${type.size.width}, ${type.size.height}  ${type.size.width/2}, 0`
 			return (
 				<svg className={`svg ${selectionFlag ? 'focus' : ''}`} style={figureStyle}>
-      				<polygon onClick={() => selectObject(id)} points={points} transform='translate(5 5)' stroke={type.color} fillOpacity="0" strokeWidth="3"/>
+      				<polygon onClick={() => createSelectObjectAction(id)} points={points} transform='translate(5 5)' stroke={type.color} fillOpacity="0" strokeWidth="3"/>
     			</svg>
 			)
 		}
 	}
 }
 
-type AddFilterProps = {
-	filterColor: string,
-	filterWidth: number,
-	filterHeight: number
-}
-
-const AddFilter = (props: AddFilterProps) => {
-	const {filterColor, filterWidth, filterHeight} = props
-
+const AddFilter = () => {
+  	const canvas = useAppSelector(state => state.canvas)
 	const filterStyle: CSSProperties = {
-		width: filterWidth,
-        height: filterHeight
+		width: canvas.size.width,
+        height: canvas.size.height
 	};
-
-	if (filterColor == "gray") {
-		return (
-			<div className="grayFilter filter" style={filterStyle}></div>
-		)
-	}
-
-	if (filterColor == "red") {
-		return (
-			<div className="redFilter filter" style={filterStyle}></div>
-		)
-	}
-
-	if (filterColor == "green") {
-		return (
-			<div className="greenFilter filter" style={filterStyle}></div>
-		)
-	}
-
-	if (filterColor == "blue") {
-		return (
-			<div className="blueFilter filter" style={filterStyle}></div>
-		)
-	}
+	if (canvas.filter == "gray") {return (<div className="grayFilter filter" style={filterStyle}></div>)}
+	if (canvas.filter == "red") {return (<div className="redFilter filter" style={filterStyle}></div>)}
+	if (canvas.filter == "green") {return (<div className="greenFilter filter" style={filterStyle}></div>)}
+	if (canvas.filter == "blue") {return (<div className="blueFilter filter" style={filterStyle}></div>)}
 }
 
 export {

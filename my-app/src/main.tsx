@@ -5,14 +5,6 @@ import {store} from './redux/store'
 import App from './App.tsx'
 import './main.css'
 
-/*const rootElement = document.getElementById('root')
-ReactDOM.render(
-  <Provider store={store}>
-    <App />
-  </Provider>,
-  rootElement
-)*/
-
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
 )

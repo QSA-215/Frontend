@@ -5,7 +5,7 @@ type History = {
 
 type CanvasModel = {
 	size: Size,
-	background: BackgroundImg | Color,
+	background: BackgroundImg | BackgroundColor,
 	filter: 'none' | 'gray' | 'red' | 'green' | 'blue',
 	objects: Array<Object>
 }
@@ -55,7 +55,7 @@ type Size = {
     height: number
 }
 
-type Color = {
+type BackgroundColor = {
 	backgroundType: 'color',
 	color: string
 }
@@ -70,5 +70,5 @@ export {
 	type Figure, 
 	type Position, 
 	type Size, 
-	type Color
+	type BackgroundColor
 }

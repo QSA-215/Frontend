@@ -1,32 +1,115 @@
 import {useState, useRef} from 'react'
-import {CanvasModel} from '../../../data/types'
 import './toolBar.css'
+import {useAppSelector, useAppActions} from '../redux/hooks'
 
-type toolBarProps = {
-  canvas: CanvasModel,
-  setCanvas: (canvas: CanvasModel) => void,
-}
+const ToolBar = () => {
+  const canvas = useAppSelector(state => state.canvas)
+  const {createClearAction,
+          createAddObjectAction,
+          createApplyFilterAction,
+          createSetCanvasAction,
+          createChangeCanvasSizeAction,
+          createChangeCanvasBackgroundAction} = useAppActions()
+  
+  // GENERAL +++
+  const [isOpenTextForm, setOpenTextForm] = useState(false);
+  const [isOpenFigureForm, setOpenFigureForm] = useState(false);
+  const [isOpenImageForm, setOpenImageForm] = useState(false);
+  const [isOpenBackgroundForm, setOpenBackgroundForm] = useState(false);
+  const [isOpenSamples, setOpenSamples] = useState(false);
+  const [isOpenCanvasSizeForm, setOpenCanvasSizeForm] = useState(false);
+  const [isOpenFilters, setOpenFilters] = useState(false);
+  const [isOpenSave, setOpenSave] = useState(false);
 
-const ToolBar = (props: toolBarProps) => {
-  const {canvas, setCanvas} = props
-  const [isOpenBackground, setOpenBackground] = useState(false)
-  const [isOpenSamples, setOpenSamples] = useState(false)
-  const [isOpenFilters, setOpenFilters] = useState(false)
-  const [isOpenSave, setOpenSave] = useState(false)
-
-  function Clear() {
-    const newCanvas = {
-      ...canvas,
-    };
-    newCanvas.objects = [];
-    newCanvas.filter = 'none';
-    newCanvas.background = {
-      backgroundType: 'color',
-      color: '#FFFFFF'
-    };
-    setCanvas(newCanvas)
+  function ActiveTextForm() {
+    setOpenTextForm(!isOpenTextForm);
+    setOpenFigureForm(false);
+    setOpenImageForm(false);
+    setOpenBackgroundForm(false);
+    setOpenSamples(false);
+    setOpenCanvasSizeForm(false);
+    setOpenFilters(false);
+    setOpenSave(false);
   }
 
+  function ActiveFigureForm() {
+    setOpenTextForm(false);
+    setOpenFigureForm(!isOpenFigureForm);
+    setOpenImageForm(false);
+    setOpenBackgroundForm(false);
+    setOpenSamples(false);
+    setOpenCanvasSizeForm(false);
+    setOpenFilters(false);
+    setOpenSave(false);
+  }
+
+  function ActiveImageForm() {
+    setOpenTextForm(false);
+    setOpenFigureForm(false);
+    setOpenImageForm(!isOpenImageForm);
+    setOpenBackgroundForm(false);
+    setOpenSamples(false);
+    setOpenCanvasSizeForm(false);
+    setOpenFilters(false);
+    setOpenSave(false);
+  }
+
+  function ActiveBackgroundMenu() {
+    setOpenTextForm(false);
+    setOpenFigureForm(false);
+    setOpenImageForm(false);
+    setOpenBackgroundForm(!isOpenBackgroundForm);
+    setOpenSamples(false);
+    setOpenCanvasSizeForm(false);
+    setOpenFilters(false);
+    setOpenSave(false);
+  }
+
+  function ActiveSamplesMenu() {
+    setOpenTextForm(false);
+    setOpenFigureForm(false);
+    setOpenImageForm(false);
+    setOpenBackgroundForm(false);
+    setOpenSamples(!isOpenSamples);
+    setOpenCanvasSizeForm(false);
+    setOpenFilters(false);
+    setOpenSave(false);
+  }
+
+  function ActiveCanvasSizeForm() {
+    setOpenTextForm(false);
+    setOpenFigureForm(false);
+    setOpenImageForm(false);
+    setOpenBackgroundForm(false);
+    setOpenSamples(false);
+    setOpenCanvasSizeForm(!isOpenCanvasSizeForm);
+    setOpenFilters(false);
+    setOpenSave(false);
+  }
+
+  function ActiveFiltersMenu() {
+    setOpenTextForm(false);
+    setOpenFigureForm(false);
+    setOpenImageForm(false);
+    setOpenBackgroundForm(false);
+    setOpenSamples(false);
+    setOpenCanvasSizeForm(false);
+    setOpenFilters(!isOpenFilters);
+    setOpenSave(false);
+  }
+
+  function ActiveSaveMenu() {
+    setOpenTextForm(false);
+    setOpenFigureForm(false);
+    setOpenImageForm(false);
+    setOpenBackgroundForm(false);
+    setOpenSamples(false);
+    setOpenCanvasSizeForm(false);
+    setOpenFilters(false);
+    setOpenSave(!isOpenSave);
+  }
+
+  // TEXT +++
   const xTextPositionInput = useRef(null);
   const yTextPositionInput = useRef(null);
   const textColorInput = useRef(null);
@@ -37,10 +120,6 @@ const ToolBar = (props: toolBarProps) => {
   const textUnderlineInput = useRef(null);
 
   function AddText() {
-    const newCanvas = {
-      ...canvas,
-    };
-    const newObjects = canvas.objects;
     const textObject = {
           id: canvas.objects.length + 1,
           position: {
@@ -58,12 +137,11 @@ const ToolBar = (props: toolBarProps) => {
           },
           selectionFlag: false
         };
-    newObjects.push(textObject);
-    newCanvas.objects = newObjects;
+    createAddObjectAction(textObject);
     setOpenTextForm(!isOpenTextForm);
-    setCanvas(newCanvas)
   }
 
+  // FIGURE +++
   const xFigurePositionInput = useRef(null);
   const yFigurePositionInput = useRef(null);
   const figureWidthInput = useRef(null);
@@ -72,10 +150,6 @@ const ToolBar = (props: toolBarProps) => {
   const figureType = useRef(null);
 
   function AddFigure() {
-    const newCanvas = {
-      ...canvas,
-    };
-    const newObjects = canvas.objects;
     const figureObject = {
           id: canvas.objects.length + 1,
           position: {
@@ -93,12 +167,11 @@ const ToolBar = (props: toolBarProps) => {
           },
           selectionFlag: false
         };
-    newObjects.push(figureObject);
-    newCanvas.objects = newObjects;
+    createAddObjectAction(figureObject);
     setOpenFigureForm(!isOpenFigureForm);
-    setCanvas(newCanvas)
   }
 
+  // IMAGE +++
   const xImagePositionInput = useRef(null);
   const yImagePositionInput = useRef(null);
   const imageWidthInput = useRef(null);
@@ -106,10 +179,6 @@ const ToolBar = (props: toolBarProps) => {
   const imageUrl = useRef(null);
 
   function AddImage() {
-    const newCanvas = {
-      ...canvas,
-    };
-    const newObjects = canvas.objects;
     const imageObject = {
           id: canvas.objects.length + 1,
           position: {
@@ -120,42 +189,59 @@ const ToolBar = (props: toolBarProps) => {
             objectType: 'img',
             url: URL.createObjectURL(imageUrl?.current?.['files'][0]),
             size: {
-              width: imageWidthInput?.current?.['value'],
-              height: imageHeightInput?.current?.['value']
+              width: Number(imageWidthInput?.current?.['value']),
+              height: Number(imageHeightInput?.current?.['value'])
             }
           },
           selectionFlag: false
         };
-    newObjects.push(imageObject);
-    newCanvas.objects = newObjects;
+    createAddObjectAction(imageObject);
     setOpenImageForm(!isOpenImageForm);
-    setCanvas(newCanvas)
   }
 
-  function ActiveBackgroundMenu() {
-    return (() => setOpenBackground(!isOpenBackground))
-  }
-  function ActiveSamplesMenu() {
-    return (() => setOpenSamples(!isOpenSamples))
-  }
+  // BACKGROUND ---
+  const canvasBackgroundColor = useRef(null);
+  const canvasBackgroundUrl = useRef(null);
 
-  function ActiveFiltersMenu() {
-    return (setOpenFilters(!isOpenFilters))
-  }
-
-  function ApplyFilter(filterColor: string) {
-    const newCanvas = {
-      ...canvas,
+  function ApplyCanvasBackgroundImage() {
+    const newBackground = {
+      backgroundType: 'img',
+      url: URL.createObjectURL(canvasBackgroundUrl?.current?.['files'][0])
     };
-    newCanvas.filter = filterColor;
-    setCanvas(newCanvas)
-    return (setOpenFilters(!isOpenFilters))
+    createChangeCanvasBackgroundAction(newBackground);
+    setOpenBackgroundForm(false);
   }
 
-  function ActiveSaveMenu() {
-    return (setOpenSave(!isOpenSave))
+  function ApplyCanvasBackgroundColor() {const newBackground = {
+      backgroundType: 'color',
+      color: canvasBackgroundColor?.current?.['value']
+    };
+    createChangeCanvasBackgroundAction(newBackground);
+    setOpenBackgroundForm(false);
   }
 
+  // SAMPLES ---
+
+  // CANVAS SIZE +++
+  const canvasWidthInput = useRef(null);
+  const canvasHeightInput = useRef(null);
+
+  function ApplyCanvasSize() {
+    const newSize = {
+      width: Number(canvasWidthInput?.current?.['value']),
+      height: Number(canvasHeightInput?.current?.['value']),
+    };
+    createChangeCanvasSizeAction(newSize);
+    setOpenCanvasSizeForm(false);
+  }
+  
+  // FILTERS +++
+  function ApplyFilter(filterColor: string) {
+    createApplyFilterAction(filterColor);
+    setOpenFilters(false);
+  }
+
+  // SAVE ++--
   function ExportToJson(canvasData: any) {
     const canvas = JSON.stringify(canvasData);
     const filename = "canvas.json";
@@ -167,7 +253,7 @@ const ToolBar = (props: toolBarProps) => {
     document.body.appendChild(a);
     a.click();
     a.remove();
-    setOpenSave(!isOpenSave)
+    setOpenSave(false)
   }
 
   function ImportFromJSON() {
@@ -179,50 +265,33 @@ const ToolBar = (props: toolBarProps) => {
     reader.addEventListener('load', (e) => {
       let JSONString = e.target.result;
     let newCanvas = JSON.parse(JSONString)
-    setCanvas(newCanvas)
+    createSetCanvasAction(newCanvas)
     });
-    setOpenSave(!isOpenSave)
+    setOpenSave(false)
   }
 
-  const [isOpenTextForm, setOpenTextForm] = useState(false)
-  function ActiveTextForm() {
-    return (() => setOpenTextForm(!isOpenTextForm))
-  }
-
-  const [isOpenFigureForm, setOpenFigureForm] = useState(false)
-  function ActiveFigureForm() {
-    return (() => setOpenFigureForm(!isOpenFigureForm))
-  }
-
-  const [isOpenImageForm, setOpenImageForm] = useState(false)
-  function ActiveImageForm() {
-    return (() => setOpenImageForm(!isOpenImageForm))
-  }
-
-  return(
+  return (
     <div className='toolBarMain'>
+
       <div className='toolBar'>
         <button className='toolBar__button'>Undo</button>
         <button className='toolBar__button'>Redo</button>
-        <button className='toolBar__button' onClick = {() => Clear()}>Clear</button>
-        <button className='toolBar__button' onClick = {ActiveTextForm()}>Text</button>
-        <button className='toolBar__button' onClick = {ActiveFigureForm()}>Figure</button>
-        <button className='toolBar__button' onClick = {ActiveImageForm()}>Image</button>
-        <button className='toolBar__button' onClick = {ActiveBackgroundMenu()}>Background</button>
-        <button className='toolBar__button' onClick = {ActiveSamplesMenu()}>Samples</button>
-        <button className='toolBar__button'>Canvas size</button>
+        <button className='toolBar__button' onClick = {() => createClearAction()}>Clear</button>
+        <button className='toolBar__button' onClick = {() => ActiveTextForm()}>Text</button>
+        <button className='toolBar__button' onClick = {() => ActiveFigureForm()}>Figure</button>
+        <button className='toolBar__button' onClick = {() => ActiveImageForm()}>Image</button>
+        <button className='toolBar__button' onClick = {() => ActiveBackgroundMenu()}>Background</button>
+        <button className='toolBar__button' onClick = {() => ActiveSamplesMenu()}>Samples</button>
+        <button className='toolBar__button' onClick = {() => ActiveCanvasSizeForm()}>Canvas size</button>
         <button className='toolBar__button' onClick = {() => ActiveFiltersMenu()}>Filters</button>
         <button className='toolBar__button' onClick = {() => ActiveSaveMenu()}>Save</button>
       </div>
+
       <div className='menues'>
-        <div className={`menues__background backgroundMenu ${isOpenBackground ? 'active' : ''}`}>
-          <button className='backgroundMenu__button' onClick = {ActiveBackgroundMenu()}>Color</button>
-          <button className='backgroundMenu__button' onClick = {ActiveBackgroundMenu()}>Image</button>
-        </div>
         <div className={`menues__samples samplesMenu ${isOpenSamples ? 'active' : ''}`}>
-          <button className='samplesMenu__button' onClick = {ActiveSamplesMenu()}>Sample 1</button>
-          <button className='samplesMenu__button' onClick = {ActiveSamplesMenu()}>Sample 2</button>
-          <button className='samplesMenu__button' onClick = {ActiveSamplesMenu()}>Sample 3</button>
+          <button className='samplesMenu__button' onClick = {() => ActiveSamplesMenu()}>Sample 1</button>
+          <button className='samplesMenu__button' onClick = {() => ActiveSamplesMenu()}>Sample 2</button>
+          <button className='samplesMenu__button' onClick = {() => ActiveSamplesMenu()}>Sample 3</button>
         </div>
         <div className={`menues__filters filtersMenu ${isOpenFilters ? 'active' : ''}`}>
           <button className='filtersMenu__button' onClick = {() => ApplyFilter('none')}>None</button>
@@ -234,7 +303,7 @@ const ToolBar = (props: toolBarProps) => {
         <div className={`menues__save saveMenu ${isOpenSave ? 'active' : ''}`}>
           <button className='saveMenu__button' onClick = {() => ActiveSaveMenu()}>JPEG</button>
           <button className='saveMenu__button' onClick = {() => ActiveSaveMenu()}>PNG</button>
-          <button className='saveMenu__button' onClick = {() => importFromJSON()}>Upload JSON</button>
+          <button className='saveMenu__button' onClick = {() => ImportFromJSON()}>Upload JSON</button>
           <input type="file" accept=".json,application/json"/>
           <button className='saveMenu__button' onClick = {() => ExportToJson(canvas)}>JSON</button>
         </div>
@@ -276,12 +345,29 @@ const ToolBar = (props: toolBarProps) => {
       </form>
 
       <form className={`imageForm ${isOpenImageForm ? 'active' : ''}`}>
-        <input type="file" name='image' ref={imageUrl}/>
+        <input type="file" name='image' accept='image/*' ref={imageUrl}/>
         <input type="number" name='imageHeight' placeholder="Height" ref={imageHeightInput}/>
         <input type="number" name='imageWidth' placeholder="Width" ref={imageWidthInput}/>
         <input type="number" name='yPosition' placeholder="Top" ref={xImagePositionInput}/>
         <input type="number" name='xPosition' placeholder="Left" ref={yImagePositionInput}/>
         <button type="button" onClick={AddImage}>Create</button>
+      </form>
+
+      <form className={`backgroundForm ${isOpenBackgroundForm ? 'active' : ''}`}>
+        <div>
+          <input type="file" name='image' accept='image/*' ref={canvasBackgroundUrl}/>
+          <button type="button" onClick={ApplyCanvasBackgroundImage}>Apply</button>
+        </div>
+        <div>
+          <input type="color" name='figureColor' ref={canvasBackgroundColor}/>
+          <button type="button" onClick={ApplyCanvasBackgroundColor}>Apply</button>
+        </div>
+      </form>
+
+      <form className={`canvasSizeForm ${isOpenCanvasSizeForm ? 'active' : ''}`}>
+        <input type="number" name='canvasHeight' placeholder="Height" defaultValue={canvas.size.height} ref={canvasHeightInput}/>
+        <input type="number" name='canvasWidth' placeholder="Width" defaultValue={canvas.size.width} ref={canvasWidthInput}/>
+        <button type="button" onClick={ApplyCanvasSize}>Apply</button>
       </form>
 
     </div>
