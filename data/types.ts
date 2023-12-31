@@ -27,9 +27,11 @@ type Text = {
 	underline: boolean
 }
 
-type BackgroundImg = {
-	backgroundType: 'img',
-	url: string
+type Figure = {
+	objectType: 'figure',
+	type: 'circle' | 'rectangle' | 'triangle',
+	size: Size,
+	color: string
 }
 
 type Img = {
@@ -38,10 +40,13 @@ type Img = {
 	size: Size
 }
 
-type Figure = {
-	objectType: 'figure',
-	type: 'circle' | 'rectangle' | 'triangle',
-	size: Size,
+type BackgroundImg = {
+	backgroundType: 'img',
+	url: string
+}
+
+type BackgroundColor = {
+	backgroundType: 'color',
 	color: string
 }
 
@@ -53,11 +58,6 @@ type Position = {
 type Size = {
 	width: number,
     height: number
-}
-
-type BackgroundColor = {
-	backgroundType: 'color',
-	color: string
 }
 
 export {

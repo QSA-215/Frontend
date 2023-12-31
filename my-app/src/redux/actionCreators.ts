@@ -46,6 +46,28 @@ function createSelectObjectAction(objectId: number) {
 	}
 }
 
+function createChangeFigureTypeAction(objectId: number, newFigureType: string) {
+	return {
+		type: CanvasActions.CHANGE_FIGURE_TYPE,
+		payload: {
+			objectId,
+			newFigureType,
+		}
+	}
+}
+
+function createChangeTextDecorationAction(objectId: number, newBold: boolean, newItalic: boolean, newUnderline: boolean,) {
+	return {
+		type: CanvasActions.CHANGE_TEXT_DECORATION,
+		payload: {
+			objectId,
+			newBold,
+			newItalic,
+			newUnderline,
+		}
+	}
+}
+
 function createChangeObjectPositionAction(objectId: number, newPosition: Position) {
 	return {
 		type: CanvasActions.CHANGE_OBJECT_POSITION,
@@ -117,6 +139,8 @@ export {
 	createChangeCanvasBackgroundAction,
 	createAddObjectAction,
 	createSelectObjectAction,
+	createChangeFigureTypeAction,
+	createChangeTextDecorationAction,
 	createChangeObjectPositionAction,
 	createChangeObjectSizeAction,
 	createChangeObjectColorAction,

@@ -6,6 +6,8 @@ enum CanvasActions {
 	CHANGE_CANVAS_BACKGROUND = 'CHANGE_CANVAS_BACKGROUND',
 	ADD_OBJECT = 'ADD_OBJECT',
 	SELECT_OBJECT = 'SELECT_OBJECT',
+	CHANGE_FIGURE_TYPE = 'CHANGE_FIGURE_TYPE',
+	CHANGE_TEXT_DECORATION = 'CHANGE_TEXT_DECORATION',
 	CHANGE_OBJECT_POSITION = 'CHANGE_OBJECT_POSITION',
 	CHANGE_OBJECT_SIZE = 'CHANGE_OBJECT_SIZE',
 	CHANGE_OBJECT_COLOR = 'CHANGE_OBJECT_COLOR',
@@ -49,6 +51,25 @@ type SelectObjectAction = {
 		objectId: number,
 	}
 }
+
+type ChangeFigureTypeAction = {
+	type: CanvasActions.CHANGE_FIGURE_TYPE,
+	payload: {
+		objectId: number,
+		newFigureType: string,
+	}
+}
+
+type ChangeTextDecorationAction = {
+	type: CanvasActions.CHANGE_TEXT_DECORATION,
+	payload: {
+		objectId: number,
+		newBold: boolean,
+		newItalic: boolean,
+		newUnderline: boolean,
+	}
+}
+
 type ChangeObjectPositionAction = {
 	type: CanvasActions.CHANGE_OBJECT_POSITION,
 	payload: {
@@ -100,7 +121,7 @@ type ClearAction = {
 	type: CanvasActions.CLEAR,
 }
 
-type Action = SetCanvasAction | ChangeCanvasSizeAction | ChangeCanvasBackgroundAction | AddObjectAction | SelectObjectAction | ChangeObjectPositionAction | ChangeObjectSizeAction | ChangeObjectColorAction | ChangeObjectTextAction | DeleteObjectAction | ApplyFilterAction | ClearAction
+type Action = SetCanvasAction | ChangeCanvasSizeAction | ChangeCanvasBackgroundAction | AddObjectAction | SelectObjectAction | ChangeFigureTypeAction | ChangeTextDecorationAction | ChangeObjectPositionAction | ChangeObjectSizeAction | ChangeObjectColorAction | ChangeObjectTextAction | DeleteObjectAction | ApplyFilterAction | ClearAction
 
 export {
 	CanvasActions,

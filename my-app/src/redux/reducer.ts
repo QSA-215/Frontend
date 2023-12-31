@@ -65,6 +65,38 @@ const canvasReducer = (state: CanvasModel = initData, action: Action) => {
 		}
 	}
 
+	case CanvasActions.CHANGE_FIGURE_TYPE: {
+		console.log('change figure type')
+		const newState = state
+		const newObjects = newState.objects.map(object => {
+			if (object.id === action.payload.objectId && object.type.objectType === 'figure') {
+				object.type.type = action.payload.newFigureType
+			}
+			return object
+		})
+		return {
+			...newState,
+			objects: newObjects,
+		}
+	}
+
+	case CanvasActions.CHANGE_TEXT_DECORATION: {
+		console.log('change text decoration')
+		const newState = state
+		const newObjects = newState.objects.map(object => {
+			if (object.id === action.payload.objectId && object.type.objectType === 'text') {
+				object.type.bold = action.payload.newBold
+				object.type.italic = action.payload.newItalic
+				object.type.underline = action.payload.newUnderline
+			}
+			return object
+		})
+		return {
+			...newState,
+			objects: newObjects,
+		}
+	}
+
 	case CanvasActions.CHANGE_OBJECT_POSITION: {
 		console.log('change position')
 		const newState = state
@@ -85,7 +117,7 @@ const canvasReducer = (state: CanvasModel = initData, action: Action) => {
 		const newState = state
 		const newObjects = newState.objects.map(object => {
 			const newType = object.type
-			if (object.id === action.payload.objectId) {
+			if (object.id === action.payload.objectId && (newType.objectType === 'img' || newType.objectType === 'figure')) {
 				newType.size = action.payload.newSize
 			}
 			return {
@@ -104,7 +136,7 @@ const canvasReducer = (state: CanvasModel = initData, action: Action) => {
 		const newState = state
 		const newObjects = newState.objects.map(object => {
 			const newType = object.type
-			if (object.id === action.payload.objectId) {
+			if (object.id === action.payload.objectId && (newType.objectType === 'text' || newType.objectType === 'figure')) {
 				newType.color = action.payload.newColor
 			}
 			return {
@@ -123,7 +155,7 @@ const canvasReducer = (state: CanvasModel = initData, action: Action) => {
 		const newState = state
 		const newObjects = newState.objects.map(object => {
 			const newType = object.type
-			if (object.id === action.payload.objectId) {
+			if (object.id === action.payload.objectId && newType.objectType === 'text') {
 				newType.str = action.payload.newText;
 				newType.fontSize = action.payload.newFontSize;
 				}

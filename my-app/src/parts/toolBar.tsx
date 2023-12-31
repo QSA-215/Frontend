@@ -1,5 +1,7 @@
 import {useState, useRef} from 'react'
 import './toolBar.css'
+import {CanvasModel} from '../../../data/types'
+import {Sample1, Sample2, Sample3} from '../../../data/samples'
 import {useAppSelector, useAppActions} from '../redux/hooks'
 
 const ToolBar = () => {
@@ -199,7 +201,7 @@ const ToolBar = () => {
     setOpenImageForm(!isOpenImageForm);
   }
 
-  // BACKGROUND ---
+  // BACKGROUND +++
   const canvasBackgroundColor = useRef(null);
   const canvasBackgroundUrl = useRef(null);
 
@@ -221,6 +223,10 @@ const ToolBar = () => {
   }
 
   // SAMPLES ---
+  function ApplySample(newCanvas: CanvasModel) {
+    createSetCanvasAction(newCanvas);
+    setOpenSamples(false);
+  }
 
   // CANVAS SIZE +++
   const canvasWidthInput = useRef(null);
@@ -289,9 +295,9 @@ const ToolBar = () => {
 
       <div className='menues'>
         <div className={`menues__samples samplesMenu ${isOpenSamples ? 'active' : ''}`}>
-          <button className='samplesMenu__button' onClick = {() => ActiveSamplesMenu()}>Sample 1</button>
-          <button className='samplesMenu__button' onClick = {() => ActiveSamplesMenu()}>Sample 2</button>
-          <button className='samplesMenu__button' onClick = {() => ActiveSamplesMenu()}>Sample 3</button>
+          <button className='samplesMenu__button' onClick = {() => ApplySample(Sample1)}>Sample 1</button>
+          <button className='samplesMenu__button' onClick = {() => ApplySample(Sample2)}>Sample 2</button>
+          <button className='samplesMenu__button' onClick = {() => ApplySample(Sample3)}>Sample 3</button>
         </div>
         <div className={`menues__filters filtersMenu ${isOpenFilters ? 'active' : ''}`}>
           <button className='filtersMenu__button' onClick = {() => ApplyFilter('none')}>None</button>
@@ -312,8 +318,8 @@ const ToolBar = () => {
       <form className={`textForm ${isOpenTextForm ? 'active' : ''}`}>
         <input required type="text" name='text' placeholder="Text" ref={textInput}/>
         <input required type="number" name='fontSize' placeholder="Font size" ref={fontSizeInput}/>
-        <input required type="number" name='yPosition' placeholder="Top" ref={xTextPositionInput}/>
-        <input required type="number" name='xPosition' placeholder="Left" ref={yTextPositionInput}/>
+        <input required type="number" name='yPosition' placeholder="Top" ref={yTextPositionInput}/>
+        <input required type="number" name='xPosition' placeholder="Left" ref={xTextPositionInput}/>
         <div>
           <b>Bold </b>
           <input type="checkbox" name="bold" ref={textBoldInput}/>
@@ -338,8 +344,8 @@ const ToolBar = () => {
         </select>
         <input type="number" name='figureHeight' placeholder="Height" ref={figureHeightInput}/>
         <input type="number" name='figureWidth' placeholder="Width" ref={figureWidthInput}/>
-        <input type="number" name='yPosition' placeholder="Top" ref={xFigurePositionInput}/>
-        <input type="number" name='xPosition' placeholder="Left" ref={yFigurePositionInput}/>
+        <input type="number" name='yPosition' placeholder="Top" ref={yFigurePositionInput}/>
+        <input type="number" name='xPosition' placeholder="Left" ref={xFigurePositionInput}/>
         <input type="color" name='figureColor' ref={figureColorInput}/>
         <button type="button" onClick={AddFigure}>Create</button>
       </form>
@@ -348,8 +354,8 @@ const ToolBar = () => {
         <input type="file" name='image' accept='image/*' ref={imageUrl}/>
         <input type="number" name='imageHeight' placeholder="Height" ref={imageHeightInput}/>
         <input type="number" name='imageWidth' placeholder="Width" ref={imageWidthInput}/>
-        <input type="number" name='yPosition' placeholder="Top" ref={xImagePositionInput}/>
-        <input type="number" name='xPosition' placeholder="Left" ref={yImagePositionInput}/>
+        <input type="number" name='yPosition' placeholder="Top" ref={yImagePositionInput}/>
+        <input type="number" name='xPosition' placeholder="Left" ref={xImagePositionInput}/>
         <button type="button" onClick={AddImage}>Create</button>
       </form>
 

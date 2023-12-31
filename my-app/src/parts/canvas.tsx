@@ -9,7 +9,9 @@ const ViewCanvas = () => {
             createChangeObjectPositionAction,
             createChangeObjectSizeAction,
             createChangeObjectTextAction,
-            createChangeObjectColorAction} = useAppActions()
+            createChangeObjectColorAction,
+            createChangeFigureTypeAction,
+            createChangeTextDecorationAction} = useAppActions()
 
     const canvasSizeStyle = {
         width: canvas.size.width,
@@ -17,13 +19,13 @@ const ViewCanvas = () => {
     };
 
     let canvasBackgroundStyle = {};
-    if (canvas.background.backgroundType == 'img') {
+    if (canvas.background.backgroundType === 'img') {
         canvasBackgroundStyle = {
             backgroundImage: 'url(' + canvas.background.url + ')',
             backgroundSize: 'cover'
         };
     }
-    if (canvas.background.backgroundType == 'color') {
+    if (canvas.background.backgroundType === 'color') {
         canvasBackgroundStyle = {
             background: canvas.background.color
         };
@@ -63,6 +65,12 @@ const ViewCanvas = () => {
         const newText = textInput.current.value;
         const newFontSize = fontSizeInput.current.value;
         const newColor = textColorInput.current.value;
+
+
+        const newBold = textBoldInput?.current?.['checked'];
+        const newItalic = textItalicInput?.current?.['checked'];
+        const newUnderline = textUnderlineInput?.current?.['checked'];
+        createChangeTextDecorationAction(canvas.objects[objectPosition].id, newBold, newItalic, newUnderline);
         createChangeObjectTextAction(canvas.objects[objectPosition].id, newText, newFontSize);
         createChangeObjectColorAction(canvas.objects[objectPosition].id, newColor);
         createChangeObjectPositionAction(canvas.objects[objectPosition].id, newPosition);
@@ -85,6 +93,8 @@ const ViewCanvas = () => {
             height: Number(figureHeightInput?.current?.['value'])
         }
         const newColor = figureColorInput?.current?.['value'];
+        const newFigureType = figureType?.current?.['value'];
+        createChangeFigureTypeAction(canvas.objects[objectPosition].id, newFigureType);
         createChangeObjectSizeAction(canvas.objects[objectPosition].id, newSize);
         createChangeObjectColorAction(canvas.objects[objectPosition].id, newColor);
         createChangeObjectPositionAction(canvas.objects[objectPosition].id, newPosition);
@@ -116,8 +126,8 @@ const ViewCanvas = () => {
             <form className={`form textForm ${isOpenTextForm ? 'active' : ''}`}>
                 <input defaultValue={isOpenTextForm ? canvas.objects[objectPosition].type.str : ''} type='text' name='text' placeholder="Text" ref={textInput}/>
                 <input defaultValue={isOpenTextForm ? canvas.objects[objectPosition].type.fontSize : ''} type="number" name='fontSize' placeholder="Font size" ref={fontSizeInput}/>
-                <input defaultValue={isOpenTextForm ? canvas.objects[objectPosition].position.x : ''} type="number" name='yPosition' placeholder="Top" ref={xTextPositionInput}/>
-                <input defaultValue={isOpenTextForm ? canvas.objects[objectPosition].position.y : ''} type="number" name='xPosition' placeholder="Left" ref={yTextPositionInput}/>
+                <input defaultValue={isOpenTextForm ? canvas.objects[objectPosition].position.y : ''} type="number" name='yPosition' placeholder="Top" ref={yTextPositionInput}/>
+                <input defaultValue={isOpenTextForm ? canvas.objects[objectPosition].position.x : ''} type="number" name='xPosition' placeholder="Left" ref={xTextPositionInput}/>
                 <div>
                   <b>Bold </b>
                   <input type="checkbox" name="bold" ref={textBoldInput}/>
@@ -145,8 +155,8 @@ const ViewCanvas = () => {
             </select>
             <input defaultValue={isOpenFigureForm ? canvas.objects[objectPosition].type.size.height : ''} type="number" name='figureHeight' placeholder="Height" ref={figureHeightInput}/>
             <input defaultValue={isOpenFigureForm ? canvas.objects[objectPosition].type.size.width : ''} type="number" name='figureWidth' placeholder="Width" ref={figureWidthInput}/>
-            <input defaultValue={isOpenFigureForm ? canvas.objects[objectPosition].position.x : ''} type="number" name='yPosition' placeholder="Top" ref={xFigurePositionInput}/>
-            <input defaultValue={isOpenFigureForm ? canvas.objects[objectPosition].position.y : ''} type="number" name='xPosition' placeholder="Left" ref={yFigurePositionInput}/>
+            <input defaultValue={isOpenFigureForm ? canvas.objects[objectPosition].position.y : ''} type="number" name='yPosition' placeholder="Top" ref={yFigurePositionInput}/>
+            <input defaultValue={isOpenFigureForm ? canvas.objects[objectPosition].position.x : ''} type="number" name='xPosition' placeholder="Left" ref={xFigurePositionInput}/>
             <input defaultValue={isOpenFigureForm ? canvas.objects[objectPosition].type.color : '#000000'} type="color" name='figureColor' ref={figureColorInput}/>
                 <div>
                   <button type="button" onClick={ChangeFigure}>Apply</button>
@@ -157,8 +167,8 @@ const ViewCanvas = () => {
           <form className={`form imageForm ${isOpenImageForm ? 'active' : ''}`}>
             <input defaultValue={isOpenImageForm ? canvas.objects[objectPosition].type.size.height : ''} type="number" name='imageHeight' placeholder="Height" ref={imageHeightInput}/>
             <input defaultValue={isOpenImageForm ? canvas.objects[objectPosition].type.size.width : ''} type="number" name='imageWidth' placeholder="Width" ref={imageWidthInput}/>
-            <input defaultValue={isOpenImageForm ? canvas.objects[objectPosition].position.x : ''} type="number" name='yPosition' placeholder="Top" ref={xImagePositionInput}/>
-            <input defaultValue={isOpenImageForm ? canvas.objects[objectPosition].position.y : ''} type="number" name='xPosition' placeholder="Left" ref={yImagePositionInput}/>
+            <input defaultValue={isOpenImageForm ? canvas.objects[objectPosition].position.y : ''} type="number" name='yPosition' placeholder="Top" ref={yImagePositionInput}/>
+            <input defaultValue={isOpenImageForm ? canvas.objects[objectPosition].position.x : ''} type="number" name='xPosition' placeholder="Left" ref={xImagePositionInput}/>
                 <div>
                   <button type="button" onClick={ChangeImage}>Apply</button>
                   <button type="button" onClick={() => createDeleteObjectAction(canvas.objects[objectPosition].id)}>Delete</button>
