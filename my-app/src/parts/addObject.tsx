@@ -6,12 +6,10 @@ type AddObjectProps = {
 	object: Object,
 	canvas: CanvasModel,
     setCanvas: (canvas: CanvasModel) => void,
-    setOpenForm: (isOpenForm: number) => void,
-    setObjectPosition: (objectPosition: number) => void,
 }
 
 const AddObject = (props: AddObjectProps) => {
-	const {canvas, setCanvas, setOpenForm, setObjectPosition} = props
+	const {canvas, setCanvas} = props
 	const {position, type, id, selectionFlag} = props.object
 
 	function selectObject(id: number) {
@@ -23,16 +21,6 @@ const AddObject = (props: AddObjectProps) => {
     	for (index = 0; index < newObjects.length; ++index) {
     		if (newObjects[index].id == id) {
     			newObjects[index].selectionFlag = !newObjects[index].selectionFlag;
-    			setObjectPosition(index);
-    			if (newObjects[index].type.objectType == 'text') {
-    				setOpenForm(1);
-    			}
-    			else if (newObjects[index].type.objectType == 'figure') {
-    				setOpenForm(2);
-    			}
-    			else if (newObjects[index].type.objectType == 'img') {
-    				setOpenForm(3);
-    			}
     		}
     		else {
     			newObjects[index].selectionFlag = false;
@@ -55,6 +43,7 @@ const AddObject = (props: AddObjectProps) => {
 			fontStyle: (type.italic == true) ? 'italic' : undefined,
 			textDecoration: (type.underline == true) ? 'underline' : undefined,
 		};
+
 		return (
 			<div>
 				<p onClick={() => selectObject(id)} className={`text ${selectionFlag ? 'focus' : ''}`} style={{...generalStyle, ...textStyle}}>{type.str}</p>

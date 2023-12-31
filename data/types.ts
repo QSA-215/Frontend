@@ -5,7 +5,7 @@ type History = {
 
 type CanvasModel = {
 	size: Size,
-	background: BackgroundImg | Color,
+	background: BackgroundImg | BackgroundColor,
 	filter: 'none' | 'gray' | 'red' | 'green' | 'blue',
 	objects: Array<Object>
 }
@@ -13,7 +13,7 @@ type CanvasModel = {
 type Object = {
 	id: number,
 	position: Position,
-	type: Text | Img | Figure,
+	type: Text | Figure | Img,
 	selectionFlag: boolean
 }
 
@@ -27,9 +27,11 @@ type Text = {
 	underline: boolean
 }
 
-type BackgroundImg = {
-	backgroundType: 'img',
-	url: string
+type Figure = {
+	objectType: 'figure',
+	type: 'circle' | 'rectangle' | 'triangle',
+	size: Size,
+	color: string
 }
 
 type Img = {
@@ -38,11 +40,9 @@ type Img = {
 	size: Size
 }
 
-type Figure = {
-	objectType: 'figure',
-	type: 'circle' | 'rectangle' | 'triangle',
-	size: Size,
-	color: string
+type BackgroundImg = {
+	backgroundType: 'img',
+	url: string
 }
 
 type Position = {
@@ -55,7 +55,7 @@ type Size = {
     height: number
 }
 
-type Color = {
+type BackgroundColor = {
 	backgroundType: 'color',
 	color: string
 }
@@ -70,5 +70,5 @@ export {
 	type Figure, 
 	type Position, 
 	type Size, 
-	type Color
+	type BackgroundColor
 }
