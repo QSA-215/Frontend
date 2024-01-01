@@ -15,6 +15,8 @@ enum CanvasActions {
 	DELETE_OBJECT = 'DELETE_OBJECT',
 	APPLY_FILTER = 'APPLY_FILTER',
 	CLEAR = 'CLEAR',
+	UNDO = 'UNDO',
+	REDO = 'REDO',
 }
 
 type SetCanvasAction = {
@@ -121,7 +123,30 @@ type ClearAction = {
 	type: CanvasActions.CLEAR,
 }
 
-type Action = SetCanvasAction | ChangeCanvasSizeAction | ChangeCanvasBackgroundAction | AddObjectAction | SelectObjectAction | ChangeFigureTypeAction | ChangeTextDecorationAction | ChangeObjectPositionAction | ChangeObjectSizeAction | ChangeObjectColorAction | ChangeObjectTextAction | DeleteObjectAction | ApplyFilterAction | ClearAction
+type UndoAction = {
+	type: CanvasActions.UNDO,
+}
+
+type RedoAction = {
+	type: CanvasActions.REDO,
+}
+
+type Action = SetCanvasAction |
+			ChangeCanvasSizeAction |
+			ChangeCanvasBackgroundAction |
+			AddObjectAction |
+			SelectObjectAction |
+			ChangeFigureTypeAction |
+			ChangeTextDecorationAction |
+			ChangeObjectPositionAction |
+			ChangeObjectSizeAction |
+			ChangeObjectColorAction |
+			ChangeObjectTextAction |
+			DeleteObjectAction |
+			ApplyFilterAction |
+			ClearAction |
+			UndoAction |
+			RedoAction
 
 export {
 	CanvasActions,

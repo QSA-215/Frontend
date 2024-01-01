@@ -2,8 +2,11 @@ import {combineReducers} from 'redux'
 import {Action, CanvasActions} from './actions'
 import {CanvasModel} from '../../../data/types'
 import {ThirdCanvas} from '../../../data/data3'
+import {createHistory} from '../../../data/history'
 
 const initData: CanvasModel = ThirdCanvas
+
+const history = createHistory<CanvasModel>(initData)
 
 const canvasReducer = (state: CanvasModel = initData, action: Action) => {
 	switch (action.type) {
@@ -11,6 +14,7 @@ const canvasReducer = (state: CanvasModel = initData, action: Action) => {
 	case CanvasActions.SET_CANVAS: {
 		console.log('set canvas')
 		const newState = action.payload.canvas
+		history.addHistoryItem(newState)
 		return {
 			...newState,
 		}
@@ -19,18 +23,19 @@ const canvasReducer = (state: CanvasModel = initData, action: Action) => {
 	case CanvasActions.CHANGE_CANVAS_SIZE: {
 		console.log('change canvas size')
 		const newState = state
+		newState.size = action.payload.newSize
+		history.addHistoryItem(newState)
 		return {
 			...newState,
-			size: action.payload.newSize
 		}
 	}
 
 	case CanvasActions.CHANGE_CANVAS_BACKGROUND: {
 		console.log('change canvas background')
 		const newState = state
+		newState.background = action.payload.newBackground
 		return {
 			...newState,
-			background: action.payload.newBackground
 		}
 	}
 
@@ -41,9 +46,10 @@ const canvasReducer = (state: CanvasModel = initData, action: Action) => {
 			...newState.objects,
 			action.payload.object
 		]
+		newState.objects = newObjects
+		history.addHistoryItem(newState)
 		return {
 			...newState,
-			objects: newObjects
 		}
 	}
 
@@ -174,33 +180,54 @@ const canvasReducer = (state: CanvasModel = initData, action: Action) => {
 		console.log('delete object')
 		const newState = state
 		const newObjects = newState.objects.filter(object => object.id !== action.payload.objectId)
+		newState.objects = newObjects
+		history.addHistoryItem(newState)
 		return {
 			...newState,
-			objects: newObjects,
 		}
 	}
 
 	case CanvasActions.APPLY_FILTER: {
 		console.log('apply filter')
 		const newState = state
+		newState.filter = action.payload.filterColor
+		history.addHistoryItem(newState)
 		return {
 			...newState,
-			filter: action.payload.filterColor
 		}
 	}
 
 	case CanvasActions.CLEAR: {
 		console.log('clear')
 		const newState = state
-		return {
-			...newState,
-			objects: [],
-			filter: 'none',
-			background: {
+		newState.objects = []
+		newState.filter = 'none'
+		newState.background = {
 				backgroundType: 'color',
 	      		color: '#FFFFFF',
 			}
+		history.addHistoryItem(newState)
+		return {
+			...newState,
 		}
+	}
+
+	case CanvasActions.UNDO: {
+		console.log('undo')
+		const prevState = history.undo()
+		if (prevState) {
+			return prevState
+		}
+		return state
+	}
+
+	case CanvasActions.REDO: {
+		console.log('redo')
+		const nextState = history.redo()
+		if (nextState) {
+			return nextState
+		}
+		return state
 	}
 
 	default:

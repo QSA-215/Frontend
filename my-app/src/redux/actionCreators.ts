@@ -133,6 +133,18 @@ function createClearAction() {
 	}
 }
 
+function createUndoAction() {
+	return {
+		type: CanvasActions.UNDO,
+	}
+}
+
+function createRedoAction() {
+	return {
+		type: CanvasActions.REDO,
+	}
+}
+
 export {
 	createSetCanvasAction,
 	createChangeCanvasSizeAction,
@@ -148,4 +160,6 @@ export {
 	createApplyFilterAction,
 	createDeleteObjectAction,
 	createClearAction,
+	createUndoAction,
+	createRedoAction,
 }

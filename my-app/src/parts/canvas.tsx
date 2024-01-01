@@ -11,7 +11,8 @@ const ViewCanvas = () => {
             createChangeObjectTextAction,
             createChangeObjectColorAction,
             createChangeFigureTypeAction,
-            createChangeTextDecorationAction} = useAppActions()
+            createChangeTextDecorationAction,
+            createSelectObjectAction} = useAppActions()
 
     const canvasSizeStyle = {
         width: canvas.size.width,
@@ -118,6 +119,12 @@ const ViewCanvas = () => {
         createChangeObjectPositionAction(canvas.objects[objectPosition].id, newPosition);
     }
 
+    // DELETE
+    function DeleteObject() {
+        createSelectObjectAction(canvas.objects[objectPosition].id)
+        createDeleteObjectAction(canvas.objects[objectPosition].id)
+    }
+
     return (
         <div className="canvas" style={{...canvasSizeStyle, ...canvasBackgroundStyle}}>
             {canvas.objects.map(object => <AddObject key={object.id} object={object} />)}
@@ -143,7 +150,7 @@ const ViewCanvas = () => {
                 <input defaultValue={isOpenTextForm ? canvas.objects[objectPosition].type.color : '#000000'} type="color" name='textColor' ref={textColorInput}/>
                 <div>
                   <button type="button" onClick={ChangeText}>Apply</button>
-                  <button type="button" onClick={() => createDeleteObjectAction(canvas.objects[objectPosition].id)}>Delete</button>
+                  <button type="button" onClick={() => DeleteObject()}>Delete</button>
                 </div>
             </form>
 
@@ -160,7 +167,7 @@ const ViewCanvas = () => {
             <input defaultValue={isOpenFigureForm ? canvas.objects[objectPosition].type.color : '#000000'} type="color" name='figureColor' ref={figureColorInput}/>
                 <div>
                   <button type="button" onClick={ChangeFigure}>Apply</button>
-                  <button type="button" onClick={() => createDeleteObjectAction(canvas.objects[objectPosition].id)}>Delete</button>
+                  <button type="button" onClick={() => DeleteObject()}>Delete</button>
                 </div>
           </form>
 
@@ -171,7 +178,7 @@ const ViewCanvas = () => {
             <input defaultValue={isOpenImageForm ? canvas.objects[objectPosition].position.x : ''} type="number" name='xPosition' placeholder="Left" ref={xImagePositionInput}/>
                 <div>
                   <button type="button" onClick={ChangeImage}>Apply</button>
-                  <button type="button" onClick={() => createDeleteObjectAction(canvas.objects[objectPosition].id)}>Delete</button>
+                  <button type="button" onClick={() => DeleteObject()}>Delete</button>
                 </div>
           </form>
 

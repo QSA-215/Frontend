@@ -3,6 +3,7 @@ import './toolBar.css'
 import {CanvasModel} from '../../../data/types'
 import {Sample1, Sample2, Sample3} from '../../../data/samples'
 import {useAppSelector, useAppActions} from '../redux/hooks'
+import html2canvas from 'html2canvas'
 
 const ToolBar = () => {
   const canvas = useAppSelector(state => state.canvas)
@@ -11,7 +12,9 @@ const ToolBar = () => {
           createApplyFilterAction,
           createSetCanvasAction,
           createChangeCanvasSizeAction,
-          createChangeCanvasBackgroundAction} = useAppActions()
+          createChangeCanvasBackgroundAction,
+          createUndoAction,
+          createRedoAction} = useAppActions()
   
   // GENERAL +++
   const [isOpenTextForm, setOpenTextForm] = useState(false);
@@ -222,7 +225,7 @@ const ToolBar = () => {
     setOpenBackgroundForm(false);
   }
 
-  // SAMPLES ---
+  // SAMPLES +++
   function ApplySample(newCanvas: CanvasModel) {
     createSetCanvasAction(newCanvas);
     setOpenSamples(false);
@@ -248,18 +251,20 @@ const ToolBar = () => {
   }
 
   // SAVE ++--
-  function ExportToJson(canvasData: any) {
-    const canvas = JSON.stringify(canvasData);
-    const filename = "canvas.json";
-
-    const file = new Blob([canvas], {type: "text/plain;charset=utf-8"});
-    const a = document.createElement("a");
-    a.href = URL.createObjectURL(file);
-    a.download = filename;
-    document.body.appendChild(a);
-    a.click();
-    a.remove();
-    setOpenSave(false)
+  const SaveAsJPEG = async () => {
+    console.log('save');
+    /*const element = document.getElementById('canvasObject'),
+    canvasss = await html2canvas(element),
+    data = canvasss.toDataURL('image/jpg'),
+    link = document.createElement('a');
+ 
+    link.href = data;
+    link.download = 'downloaded-image.jpg';
+ 
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);*/
+    setOpenSave(false);
   }
 
   function ImportFromJSON() {
@@ -280,8 +285,8 @@ const ToolBar = () => {
     <div className='toolBarMain'>
 
       <div className='toolBar'>
-        <button className='toolBar__button'>Undo</button>
-        <button className='toolBar__button'>Redo</button>
+        <button className='toolBar__button'onClick = {() => createUndoAction()}>Undo</button>
+        <button className='toolBar__button'onClick = {() => createRedoAction()}>Redo</button>
         <button className='toolBar__button' onClick = {() => createClearAction()}>Clear</button>
         <button className='toolBar__button' onClick = {() => ActiveTextForm()}>Text</button>
         <button className='toolBar__button' onClick = {() => ActiveFigureForm()}>Figure</button>
@@ -307,7 +312,7 @@ const ToolBar = () => {
           <button className='filtersMenu__button' onClick = {() => ApplyFilter('blue')}>Blue</button>
         </div>
         <div className={`menues__save saveMenu ${isOpenSave ? 'active' : ''}`}>
-          <button className='saveMenu__button' onClick = {() => ActiveSaveMenu()}>JPEG</button>
+          <button className='saveMenu__button' onClick = {() => SaveAsJPEG()}>JPEG</button>
           <button className='saveMenu__button' onClick = {() => ActiveSaveMenu()}>PNG</button>
           <button className='saveMenu__button' onClick = {() => ImportFromJSON()}>Upload JSON</button>
           <input type="file" accept=".json,application/json"/>
