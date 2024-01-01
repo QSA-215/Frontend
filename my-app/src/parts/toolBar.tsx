@@ -253,18 +253,32 @@ const ToolBar = () => {
   // SAVE ++--
   const SaveAsJPEG = async () => {
     console.log('save');
-    /*const element = document.getElementById('canvasObject'),
-    canvasss = await html2canvas(element),
-    data = canvasss.toDataURL('image/jpg'),
+    const element = document.getElementById('canvasElement');
+    canvasss = await html2canvas(element);
+    data = canvasss.toDataURL('image/jpg');
     link = document.createElement('a');
  
     link.href = data;
-    link.download = 'downloaded-image.jpg';
+    link.download = 'canvas.jpg';
  
     document.body.appendChild(link);
     link.click();
-    document.body.removeChild(link);*/
+    document.body.removeChild(link);
     setOpenSave(false);
+  }
+  
+  function ExportToJson(canvasData: any) {
+    const canvas = JSON.stringify(canvasData);
+    const filename = "canvas.json";
+
+    const file = new Blob([canvas], {type: "text/plain;charset=utf-8"});
+    const a = document.createElement("a");
+    a.href = URL.createObjectURL(file);
+    a.download = filename;
+    document.body.appendChild(a);
+    a.click();
+    a.remove();
+    setOpenSave(false)
   }
 
   function ImportFromJSON() {
