@@ -9,12 +9,28 @@ type AddObjectProps = {
 
 const AddObject = (props: AddObjectProps) => {
 	const {position, type, id, selectionFlag} = props.object
-    const {createSelectObjectAction} = useAppActions()
+    const {createSelectObjectAction, createChangeObjectPositionAction} = useAppActions()
 
 	const generalStyle: CSSProperties = {
 		top: position.y + 'px',
 		left: position.x + 'px'
 	};
+
+	let startX = 0;
+	let startY = 0;
+
+	const MouseDown = (event) => {
+		startX = event.pageX
+		startY = event.pageY
+	}
+
+	const DragEnd = (event) => {
+		const newPosition = {
+			x: position.x + event.pageX - startX,
+			y: position.y + event.pageY - startY
+		}
+		createChangeObjectPositionAction(id, newPosition)
+	}
 
 	if (type.objectType == 'text') {
 		const textStyle = {
@@ -24,7 +40,7 @@ const AddObject = (props: AddObjectProps) => {
 			fontStyle: (type.italic == true) ? 'italic' : undefined,
 			textDecoration: (type.underline == true) ? 'underline' : undefined,
 		};
-		return (<p onClick={() => createSelectObjectAction(id)} className={`text ${selectionFlag ? 'focus' : ''}`} style={{...generalStyle, ...textStyle}}>{type.str}</p>)
+		return (<p draggable onDragEnd={DragEnd} onMouseDown={MouseDown} onClick={() => createSelectObjectAction(id)} className={`text ${selectionFlag ? 'focus' : ''}`} style={{...generalStyle, ...textStyle}}>{type.str}</p>)
 	}
 
 
@@ -32,10 +48,8 @@ const AddObject = (props: AddObjectProps) => {
 		const imageStyle = {
 			width: type.size.width + 'px',
 			height: type.size.height + 'px',
-			backgroundImage: 'url(' + type.url + ')',
-			backgroundSize: 'cover'
 		};
-		return (<div onClick={() => createSelectObjectAction(id)} className={`image ${selectionFlag ? 'focus' : ''}`} style={{...generalStyle, ...imageStyle}}></div>)
+		return (<img src={type.url} draggable onDragEnd={DragEnd} onMouseDown={MouseDown} onClick={() => createSelectObjectAction(id)} className={`image ${selectionFlag ? 'focus' : ''}`} style={{...generalStyle, ...imageStyle}} />)
 	}
 
 
