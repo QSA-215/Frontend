@@ -31,3 +31,7 @@
 	position: absolute;
 	display: inline-block;
 }
+
+.image {
+	object-fit: fill
+}

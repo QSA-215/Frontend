@@ -23,7 +23,6 @@ const ViewCanvas = () => {
     if (canvas.background.backgroundType === 'img') {
         canvasBackgroundStyle = {
             backgroundImage: 'url(' + canvas.background.url + ')',
-            backgroundSize: 'cover'
         };
     }
     if (canvas.background.backgroundType === 'color') {

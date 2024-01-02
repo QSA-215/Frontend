@@ -2,7 +2,8 @@
 	position: relative;
 	display: inline-block;
 	box-shadow: 0 0 15px #444444;
-	background-color: #ffffff; 
+	background-color: #ffffff;
+	background-size: cover;
 }
 
 .form {

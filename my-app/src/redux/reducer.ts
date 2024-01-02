@@ -112,9 +112,10 @@ const canvasReducer = (state: CanvasModel = initData, action: Action) => {
 			}
 			return object
 		})
+		newState.objects = newObjects
+		history.addHistoryItem(newState)
 		return {
 			...newState,
-			objects: newObjects,
 		}
 	}
 
