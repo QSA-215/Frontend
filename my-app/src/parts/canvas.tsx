@@ -21,7 +21,6 @@ const ViewCanvas = (props: ViewCanvasProps) => {
     if (background.backgroundType == 'img') {
         canvasBackgroundStyle = {
             backgroundImage: 'url(' + background.url + ')',
-            backgroundSize: 'cover'
         };
     }
     if (background.backgroundType == 'color') {

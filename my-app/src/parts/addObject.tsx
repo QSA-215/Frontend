@@ -35,6 +35,33 @@ const AddObject = (props: AddObjectProps) => {
 		left: position.x + 'px'
 	};
 
+	let startX = 0;
+	let startY = 0;
+
+	const MouseDown = (event) => {
+		startX = event.pageX
+		startY = event.pageY
+	}
+
+	const DragEnd = (event) => {
+		const newPosition = {
+			x: position.x + event.pageX - startX,
+			y: position.y + event.pageY - startY
+		}
+		const newCanvas = {
+      		...canvas,
+    	};
+    	const newObjects = canvas.objects;
+    	var index;
+    	for (index = 0; index < newObjects.length; ++index) {
+    		if (newObjects[index].id == id) {
+    			newObjects[index].position = newPosition
+    		}
+		}
+    	newCanvas.objects = newObjects;
+    	setCanvas(newCanvas)
+	}
+
 	if (type.objectType == 'text') {
 		const textStyle = {
 			color: type.color,
@@ -45,9 +72,7 @@ const AddObject = (props: AddObjectProps) => {
 		};
 
 		return (
-			<div>
-				<p onClick={() => selectObject(id)} className={`text ${selectionFlag ? 'focus' : ''}`} style={{...generalStyle, ...textStyle}}>{type.str}</p>
-			</div>
+			<p draggable onDragEnd={DragEnd} onMouseDown={MouseDown} onClick={() => selectObject(id)} className={`text ${selectionFlag ? 'focus' : ''}`} style={{...generalStyle, ...textStyle}}>{type.str}</p>
 		)
 	}
 
@@ -56,11 +81,9 @@ const AddObject = (props: AddObjectProps) => {
 		const imageStyle = {
 			width: type.size.width + 'px',
 			height: type.size.height + 'px',
-			backgroundImage: 'url(' + type.url + ')',
-			backgroundSize: 'cover'
 		};
 		return (
-			<div onClick={() => selectObject(id)} className={`image ${selectionFlag ? 'focus' : ''}`} style={{...generalStyle, ...imageStyle}}></div>
+			<img draggable onDragEnd={DragEnd} onMouseDown={MouseDown} src={type.url} onClick={() => selectObject(id)} className={`image ${selectionFlag ? 'focus' : ''}`} style={{...generalStyle, ...imageStyle}} />
 		)
 	}
 
@@ -113,30 +136,10 @@ const AddFilter = (props: AddFilterProps) => {
 		width: filterWidth,
         height: filterHeight
 	};
-
-	if (filterColor == "gray") {
-		return (
-			<div className="grayFilter filter" style={filterStyle}></div>
-		)
-	}
-
-	if (filterColor == "red") {
-		return (
-			<div className="redFilter filter" style={filterStyle}></div>
-		)
-	}
-
-	if (filterColor == "green") {
-		return (
-			<div className="greenFilter filter" style={filterStyle}></div>
-		)
-	}
-
-	if (filterColor == "blue") {
-		return (
-			<div className="blueFilter filter" style={filterStyle}></div>
-		)
-	}
+	if (filterColor == "gray") {return (<div className="grayFilter filter" style={filterStyle}></div>)}
+	if (filterColor == "red") {return (<div className="redFilter filter" style={filterStyle}></div>)}
+	if (filterColor == "green") {return (<div className="greenFilter filter" style={filterStyle}></div>)}
+	if (filterColor == "blue") {return (<div className="blueFilter filter" style={filterStyle}></div>)}
 }
 
 export {
