@@ -4,6 +4,7 @@ import {CanvasModel} from '../../../data/types'
 import {Sample1, Sample2, Sample3} from '../../../data/samples'
 import {useAppSelector, useAppActions} from '../redux/hooks'
 import html2canvas from 'html2canvas'
+import {ViewCanvas} from './canvas'
 
 const ToolBar = () => {
   const canvas = useAppSelector(state => state.canvas)
@@ -125,8 +126,14 @@ const ToolBar = () => {
   const textUnderlineInput = useRef(null);
 
   function AddText() {
+    let newElementId = 0;
+    canvas.objects.map(object => {
+      if (object.id > newElementId) {
+        newElementId = object.id
+      }
+    })
     const textObject = {
-          id: canvas.objects.length + 1,
+          id: newElementId + 1,
           position: {
             x: xTextPositionInput?.current?.['value'],
             y: yTextPositionInput?.current?.['value']
@@ -155,8 +162,14 @@ const ToolBar = () => {
   const figureType = useRef(null);
 
   function AddFigure() {
+    let newElementId = 0;
+    canvas.objects.map(object => {
+      if (object.id > newElementId) {
+        newElementId = object.id
+      }
+    })
     const figureObject = {
-          id: canvas.objects.length + 1,
+          id: newElementId + 1,
           position: {
             x: Number(xFigurePositionInput?.current?.['value']),
             y: Number(yFigurePositionInput?.current?.['value'])
@@ -184,8 +197,14 @@ const ToolBar = () => {
   const imageUrl = useRef(null);
 
   function AddImage() {
+    let newElementId = 0;
+    canvas.objects.map(object => {
+      if (object.id > newElementId) {
+        newElementId = object.id
+      }
+    })
     const imageObject = {
-          id: canvas.objects.length + 1,
+          id: newElementId + 1,
           position: {
             x: xImagePositionInput?.current?.['value'],
             y: yImagePositionInput?.current?.['value']
@@ -252,14 +271,28 @@ const ToolBar = () => {
 
   // SAVE ++--
   const SaveAsJPEG = async () => {
-    console.log('save');
-    const element = document.getElementById('canvasElement');
-    canvasss = await html2canvas(element);
-    data = canvasss.toDataURL('image/jpg');
-    link = document.createElement('a');
+    const element = document.getElementById('canvasElem');
+    const canvasss = await html2canvas(element);
+    const data = canvasss.toDataURL('image/jpeg', 1);
+    const link = document.createElement('a');
  
     link.href = data;
-    link.download = 'canvas.jpg';
+    link.download = 'canvas.jpeg';
+ 
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+    setOpenSave(false);
+  }
+
+  const SaveAsPNG = async () => {
+    const element = document.getElementById('canvasElem');
+    const canvasss = await html2canvas(element);
+    const data = canvasss.toDataURL('image/png', 1);
+    const link = document.createElement('a');
+ 
+    link.href = data;
+    link.download = 'canvas.png';
  
     document.body.appendChild(link);
     link.click();
@@ -285,22 +318,27 @@ const ToolBar = () => {
     const elemInput = document.querySelector('[type="file"]');
     const files = elemInput.files;
 
-    const reader = new FileReader()
-    reader.readAsText(files[0])
-    reader.addEventListener('load', (e) => {
-      let JSONString = e.target.result;
-    let newCanvas = JSON.parse(JSONString)
-    createSetCanvasAction(newCanvas)
-    });
-    setOpenSave(false)
+    if (files[0] != undefined) {
+      const reader = new FileReader()
+      reader.readAsText(files[0])
+      reader.addEventListener('load', (e) => {
+        let JSONString = e.target.result;
+      let newCanvas = JSON.parse(JSONString)
+      createSetCanvasAction(newCanvas)
+      });
+      setOpenSave(false)
+    }
+    else {
+      alert('There are no files')
+    }
   }
 
   return (
     <div className='toolBarMain'>
 
       <div className='toolBar'>
-        <button className='toolBar__button'onClick = {() => createUndoAction()}>Undo</button>
-        <button className='toolBar__button'onClick = {() => createRedoAction()}>Redo</button>
+        <button className='toolBar__button' onClick = {() => createUndoAction()}>Undo</button>
+        <button className='toolBar__button' onClick = {() => createRedoAction()}>Redo</button>
         <button className='toolBar__button' onClick = {() => createClearAction()}>Clear</button>
         <button className='toolBar__button' onClick = {() => ActiveTextForm()}>Text</button>
         <button className='toolBar__button' onClick = {() => ActiveFigureForm()}>Figure</button>
@@ -327,18 +365,19 @@ const ToolBar = () => {
         </div>
         <div className={`menues__save saveMenu ${isOpenSave ? 'active' : ''}`}>
           <button className='saveMenu__button' onClick = {() => SaveAsJPEG()}>JPEG</button>
-          <button className='saveMenu__button' onClick = {() => ActiveSaveMenu()}>PNG</button>
-          <button className='saveMenu__button' onClick = {() => ImportFromJSON()}>Upload JSON</button>
-          <input type="file" accept=".json,application/json"/>
+          <button className='saveMenu__button' onClick = {() => SaveAsPNG()}>PNG</button>
           <button className='saveMenu__button' onClick = {() => ExportToJson(canvas)}>JSON</button>
+          <button className='saveMenu__button' onClick = {() => ImportFromJSON()}>Apply JSON</button>
+          <label className='saveMenu__button' htmlFor="JSONUpload">Upload JSON</label>
+          <input style={{display: 'none'}} id='JSONUpload'type="file" accept=".json,application/json"/>
         </div>
       </div>
 
       <form className={`textForm ${isOpenTextForm ? 'active' : ''}`}>
-        <input required type="text" name='text' placeholder="Text" ref={textInput}/>
-        <input required type="number" name='fontSize' placeholder="Font size" ref={fontSizeInput}/>
-        <input required type="number" name='yPosition' placeholder="Top" ref={yTextPositionInput}/>
-        <input required type="number" name='xPosition' placeholder="Left" ref={xTextPositionInput}/>
+        <input type="text" name='text' placeholder="Text" ref={textInput}/>
+        <input type="number" name='fontSize' placeholder="Font size" ref={fontSizeInput}/>
+        <input type="number" name='yPosition' placeholder="Top" ref={yTextPositionInput}/>
+        <input type="number" name='xPosition' placeholder="Left" ref={xTextPositionInput}/>
         <div>
           <b>Bold </b>
           <input type="checkbox" name="bold" ref={textBoldInput}/>
@@ -351,7 +390,10 @@ const ToolBar = () => {
           <u>Underline </u>
           <input type="checkbox" name="underline" ref={textUnderlineInput}/>
         </div>
-        <input type="color" name='textColor' ref={textColorInput}/>
+        <div style={{display: 'flex'}}>
+          <p style={{paddingRight: '5px'}}>Color</p>
+          <input type="color" name='textColor' ref={textColorInput}/>
+        </div>
         <button type="button" onClick={AddText}>Create</button>
       </form>
 
@@ -365,7 +407,10 @@ const ToolBar = () => {
         <input type="number" name='figureWidth' placeholder="Width" ref={figureWidthInput}/>
         <input type="number" name='yPosition' placeholder="Top" ref={yFigurePositionInput}/>
         <input type="number" name='xPosition' placeholder="Left" ref={xFigurePositionInput}/>
-        <input type="color" name='figureColor' ref={figureColorInput}/>
+        <div style={{display: 'flex'}}>
+          <p style={{paddingRight: '5px'}}>Color</p>
+          <input type="color" name='figureColor' ref={figureColorInput}/>
+        </div>
         <button type="button" onClick={AddFigure}>Create</button>
       </form>
 

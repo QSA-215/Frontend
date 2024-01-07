@@ -26,8 +26,8 @@ const AddObject = (props: AddObjectProps) => {
 
 	const DragEnd = (event) => {
 		const newPosition = {
-			x: position.x + event.pageX - startX,
-			y: position.y + event.pageY - startY
+			x: Number(position.x + event.pageX - startX),
+			y: Number(position.y + event.pageY - startY)
 		}
 		createChangeObjectPositionAction(id, newPosition)
 	}
@@ -63,44 +63,37 @@ const AddObject = (props: AddObjectProps) => {
 
 		if (type.type == 'circle') {
 			return (
-				<svg className={`svg ${selectionFlag ? 'focus' : ''}`} style={figureStyle}>
-      				<circle onClick={() => createSelectObjectAction(id)} r={type.size.width/2} cx={(type.size.width/2) + 5} cy={(type.size.width/2) + 5} stroke={type.color} fillOpacity="0" strokeWidth="3"/>
-    			</svg>
+				<div draggable onDragEnd={DragEnd} onMouseDown={MouseDown}>
+					<svg className={`svg ${selectionFlag ? 'focus' : ''}`} style={figureStyle}>
+	      				<circle onClick={() => createSelectObjectAction(id)} r={type.size.width/2} cx={(type.size.width/2) + 5} cy={(type.size.width/2) + 5} stroke={type.color} fillOpacity="0" strokeWidth="3"/>
+	    			</svg>
+    			</div>
 			)
 		}
 
 		if (type.type == 'rectangle') {
 			return (
-				<svg className={`svg ${selectionFlag ? 'focus' : ''}`} style={figureStyle}>
-      				<rect onClick={() => createSelectObjectAction(id)} width={type.size.width} height={type.size.height} x={5} y={5} stroke={type.color} fillOpacity="0" strokeWidth="3"/>
-    			</svg>
+				<div draggable onDragEnd={DragEnd} onMouseDown={MouseDown}>
+					<svg className={`svg ${selectionFlag ? 'focus' : ''}`} style={figureStyle}>
+	      				<rect onClick={() => createSelectObjectAction(id)} width={type.size.width} height={type.size.height} x={5} y={5} stroke={type.color} fillOpacity="0" strokeWidth="3"/>
+	    			</svg>
+    			</div>
 			)
 		}
 
 		if (type.type == 'triangle') {
   			const points = `0, ${type.size.height}  ${type.size.width}, ${type.size.height}  ${type.size.width/2}, 0`
 			return (
-				<svg className={`svg ${selectionFlag ? 'focus' : ''}`} style={figureStyle}>
-      				<polygon onClick={() => createSelectObjectAction(id)} points={points} transform='translate(5 5)' stroke={type.color} fillOpacity="0" strokeWidth="3"/>
-    			</svg>
+				<div draggable onDragEnd={DragEnd} onMouseDown={MouseDown}>
+					<svg className={`svg ${selectionFlag ? 'focus' : ''}`} style={figureStyle}>
+	      				<polygon onClick={() => createSelectObjectAction(id)} points={points} transform='translate(5 5)' stroke={type.color} fillOpacity="0" strokeWidth="3"/>
+	    			</svg>
+    			</div>
 			)
 		}
 	}
 }
 
-const AddFilter = () => {
-  	const canvas = useAppSelector(state => state.canvas)
-	const filterStyle: CSSProperties = {
-		width: canvas.size.width,
-        height: canvas.size.height
-	};
-	if (canvas.filter == "gray") {return (<div className="grayFilter filter" style={filterStyle}></div>)}
-	if (canvas.filter == "red") {return (<div className="redFilter filter" style={filterStyle}></div>)}
-	if (canvas.filter == "green") {return (<div className="greenFilter filter" style={filterStyle}></div>)}
-	if (canvas.filter == "blue") {return (<div className="blueFilter filter" style={filterStyle}></div>)}
-}
-
 export {
 	AddObject,
-	AddFilter
 }

@@ -50,7 +50,7 @@
 }
 
 .saveMenu {
-    transform: translate(840px, 0);
+    transform: translate(904px, 0);
 }
 
 .samplesMenu.active, .filtersMenu.active, .saveMenu.active {

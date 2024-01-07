@@ -1,6 +1,6 @@
 import './canvas.css'
 import {useRef} from 'react'
-import {AddObject, AddFilter} from './addObject'
+import {AddObject} from './addObject'
 import {useAppSelector, useAppActions} from '../redux/hooks'
 
 const ViewCanvas = () => {
@@ -28,6 +28,27 @@ const ViewCanvas = () => {
     if (canvas.background.backgroundType === 'color') {
         canvasBackgroundStyle = {
             background: canvas.background.color
+        };
+    }
+    let canvasFilterStyle = {};
+    if (canvas.filter == 'gray') {
+        canvasFilterStyle = {
+            filter: 'grayscale(1)'
+        };
+    }
+    if (canvas.filter == 'red') {
+        canvasFilterStyle = {
+            filter: 'hue-rotate(315deg)'
+        };
+    }
+    if (canvas.filter == 'green') {
+        canvasFilterStyle = {
+            filter: 'hue-rotate(90deg)'
+        };
+    }
+    if (canvas.filter == 'blue') {
+        canvasFilterStyle = {
+            filter: 'hue-rotate(180deg)'
         };
     }
 
@@ -59,8 +80,8 @@ const ViewCanvas = () => {
     const textUnderlineInput = useRef(null);
     function ChangeText() {
         const newPosition = {
-                x: xTextPositionInput.current.value,
-                y: yTextPositionInput.current.value
+                x: Number(xTextPositionInput.current.value),
+                y: Number(yTextPositionInput.current.value)
               };     
         const newText = textInput.current.value;
         const newFontSize = fontSizeInput.current.value;
@@ -125,9 +146,9 @@ const ViewCanvas = () => {
     }
 
     return (
-        <div className="canvas" style={{...canvasSizeStyle, ...canvasBackgroundStyle}}>
+        <div id='canvasElem' className="canvas" style={{...canvasSizeStyle, ...canvasBackgroundStyle, ...canvasFilterStyle}}>
             {canvas.objects.map(object => <AddObject key={object.id} object={object} />)}
-            <AddFilter />
+            
 
             <form className={`form textForm ${isOpenTextForm ? 'active' : ''}`}>
                 <input defaultValue={isOpenTextForm ? canvas.objects[objectPosition].type.str : ''} type='text' name='text' placeholder="Text" ref={textInput}/>
@@ -146,7 +167,10 @@ const ViewCanvas = () => {
                   <u>Underline </u>
                   <input type="checkbox" name="underline" ref={textUnderlineInput}/>
                 </div>
-                <input defaultValue={isOpenTextForm ? canvas.objects[objectPosition].type.color : '#000000'} type="color" name='textColor' ref={textColorInput}/>
+                <div style={{display: 'flex'}}>
+                  <p style={{paddingRight: '5px'}}>Color</p>
+                  <input defaultValue={isOpenTextForm ? canvas.objects[objectPosition].type.color : '#000000'} type="color" name='textColor' ref={textColorInput}/>
+                </div>
                 <div>
                   <button type="button" onClick={ChangeText}>Apply</button>
                   <button type="button" onClick={() => DeleteObject()}>Delete</button>
@@ -163,7 +187,10 @@ const ViewCanvas = () => {
             <input defaultValue={isOpenFigureForm ? canvas.objects[objectPosition].type.size.width : ''} type="number" name='figureWidth' placeholder="Width" ref={figureWidthInput}/>
             <input defaultValue={isOpenFigureForm ? canvas.objects[objectPosition].position.y : ''} type="number" name='yPosition' placeholder="Top" ref={yFigurePositionInput}/>
             <input defaultValue={isOpenFigureForm ? canvas.objects[objectPosition].position.x : ''} type="number" name='xPosition' placeholder="Left" ref={xFigurePositionInput}/>
-            <input defaultValue={isOpenFigureForm ? canvas.objects[objectPosition].type.color : '#000000'} type="color" name='figureColor' ref={figureColorInput}/>
+                <div style={{display: 'flex'}}>
+                  <p style={{paddingRight: '5px'}}>Color</p>
+                  <input defaultValue={isOpenFigureForm ? canvas.objects[objectPosition].type.color : '#000000'} type="color" name='figureColor' ref={figureColorInput}/>
+                </div>
                 <div>
                   <button type="button" onClick={ChangeFigure}>Apply</button>
                   <button type="button" onClick={() => DeleteObject()}>Delete</button>

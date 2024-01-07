@@ -9,7 +9,7 @@ const App = () => {
     <div className='app'>
       <Header />
       <ToolBar />
-      <ViewCanvas id='canvasElement' />
+      <ViewCanvas />
     </div>
   )
 }
