@@ -168,12 +168,12 @@ const ViewCanvas = () => {
                   <input type="checkbox" name="underline" ref={textUnderlineInput}/>
                 </div>
                 <div style={{display: 'flex'}}>
-                  <p style={{paddingRight: '5px'}}>Color</p>
+                  <p style={{marginRight: '5px'}}>Color</p>
                   <input defaultValue={isOpenTextForm ? canvas.objects[objectPosition].type.color : '#000000'} type="color" name='textColor' ref={textColorInput}/>
                 </div>
                 <div>
                   <button type="button" onClick={ChangeText}>Apply</button>
-                  <button type="button" onClick={() => DeleteObject()}>Delete</button>
+                  <button className='deleteButton' type="button" onClick={() => DeleteObject()}>Delete</button>
                 </div>
             </form>
 
@@ -188,12 +188,12 @@ const ViewCanvas = () => {
             <input defaultValue={isOpenFigureForm ? canvas.objects[objectPosition].position.y : ''} type="number" name='yPosition' placeholder="Top" ref={yFigurePositionInput}/>
             <input defaultValue={isOpenFigureForm ? canvas.objects[objectPosition].position.x : ''} type="number" name='xPosition' placeholder="Left" ref={xFigurePositionInput}/>
                 <div style={{display: 'flex'}}>
-                  <p style={{paddingRight: '5px'}}>Color</p>
+                  <p style={{marginRight: '5px'}}>Color</p>
                   <input defaultValue={isOpenFigureForm ? canvas.objects[objectPosition].type.color : '#000000'} type="color" name='figureColor' ref={figureColorInput}/>
                 </div>
                 <div>
                   <button type="button" onClick={ChangeFigure}>Apply</button>
-                  <button type="button" onClick={() => DeleteObject()}>Delete</button>
+                  <button className='deleteButton' type="button" onClick={() => DeleteObject()}>Delete</button>
                 </div>
           </form>
 
@@ -204,7 +204,7 @@ const ViewCanvas = () => {
             <input defaultValue={isOpenImageForm ? canvas.objects[objectPosition].position.x : ''} type="number" name='xPosition' placeholder="Left" ref={xImagePositionInput}/>
                 <div>
                   <button type="button" onClick={ChangeImage}>Apply</button>
-                  <button type="button" onClick={() => DeleteObject()}>Delete</button>
+                  <button className='deleteButton' type="button" onClick={() => DeleteObject()}>Delete</button>
                 </div>
           </form>
 

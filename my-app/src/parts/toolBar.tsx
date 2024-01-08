@@ -391,7 +391,7 @@ const ToolBar = () => {
           <input type="checkbox" name="underline" ref={textUnderlineInput}/>
         </div>
         <div style={{display: 'flex'}}>
-          <p style={{paddingRight: '5px'}}>Color</p>
+          <p style={{marginRight: '5px'}}>Color</p>
           <input type="color" name='textColor' ref={textColorInput}/>
         </div>
         <button type="button" onClick={AddText}>Create</button>
@@ -408,14 +408,15 @@ const ToolBar = () => {
         <input type="number" name='yPosition' placeholder="Top" ref={yFigurePositionInput}/>
         <input type="number" name='xPosition' placeholder="Left" ref={xFigurePositionInput}/>
         <div style={{display: 'flex'}}>
-          <p style={{paddingRight: '5px'}}>Color</p>
+          <p style={{marginRight: '5px'}}>Color</p>
           <input type="color" name='figureColor' ref={figureColorInput}/>
         </div>
         <button type="button" onClick={AddFigure}>Create</button>
       </form>
 
       <form className={`imageForm ${isOpenImageForm ? 'active' : ''}`}>
-        <input type="file" name='image' accept='image/*' ref={imageUrl}/>
+        <label style={{marginBottom: '5px'}} htmlFor='imageUpload'>Upload image</label>
+        <input style={{display: 'none'}} id='imageUpload' type="file" name='image' accept='image/*' ref={imageUrl}/>
         <input type="number" name='imageHeight' placeholder="Height" ref={imageHeightInput}/>
         <input type="number" name='imageWidth' placeholder="Width" ref={imageWidthInput}/>
         <input type="number" name='yPosition' placeholder="Top" ref={yImagePositionInput}/>
@@ -425,10 +426,12 @@ const ToolBar = () => {
 
       <form className={`backgroundForm ${isOpenBackgroundForm ? 'active' : ''}`}>
         <div>
-          <input type="file" name='image' accept='image/*' ref={canvasBackgroundUrl}/>
+          <label htmlFor='canvasBackground'>Upload image</label>
+          <input style={{display: 'none'}} id='canvasBackground' type="file" name='image' accept='image/*' ref={canvasBackgroundUrl}/>
           <button type="button" onClick={ApplyCanvasBackgroundImage}>Apply</button>
         </div>
-        <div>
+        <div style={{display: 'flex'}}>
+          <p style={{marginRight: '5px'}}>Color</p>
           <input type="color" name='figureColor' ref={canvasBackgroundColor}/>
           <button type="button" onClick={ApplyCanvasBackgroundColor}>Apply</button>
         </div>

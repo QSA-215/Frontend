@@ -34,6 +34,7 @@ const canvasReducer = (state: CanvasModel = initData, action: Action) => {
 		console.log('change canvas background')
 		const newState = state
 		newState.background = action.payload.newBackground
+		history.addHistoryItem(newState)
 		return {
 			...newState,
 		}
